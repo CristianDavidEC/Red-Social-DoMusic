@@ -1,4 +1,8 @@
-import {Entity, model, property} from '@loopback/repository';
+import {Entity, model, property, hasOne} from '@loopback/repository';
+import {Aficionado} from './aficionado.model';
+import {MusicoProfesional} from './musico-profesional.model';
+import {Banda} from './banda.model';
+import {Administrador} from './administrador.model';
 
 @model()
 export class Usuario extends Entity {
@@ -22,6 +26,17 @@ export class Usuario extends Entity {
   })
   contrasena: string;
 
+  @hasOne(() => Aficionado)
+  aficionado: Aficionado;
+
+  @hasOne(() => MusicoProfesional)
+  musicoProfesional: MusicoProfesional;
+
+  @hasOne(() => Banda)
+  banda: Banda;
+
+  @hasOne(() => Administrador)
+  administrador: Administrador;
 
   constructor(data?: Partial<Usuario>) {
     super(data);
