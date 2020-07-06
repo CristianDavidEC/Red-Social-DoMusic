@@ -9,3 +9,8 @@ export * from './usuario-administrador.controller';
 export * from './administrador-usuario.controller';
 export * from './banda-musico-profesional.controller';
 export * from './musico-profesional-banda.controller';
+export * from './usuario.controller';
+export * from './aficionado.controller';
+export * from './musico-profesional.controller';
+export * from './banda.controller';
+export * from './administrador.controller';
