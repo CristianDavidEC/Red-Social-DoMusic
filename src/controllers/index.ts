@@ -7,3 +7,5 @@ export * from './usuario-banda.controller';
 export * from './banda-usuario.controller';
 export * from './usuario-administrador.controller';
 export * from './administrador-usuario.controller';
+export * from './banda-musico-profesional.controller';
+export * from './musico-profesional-banda.controller';
