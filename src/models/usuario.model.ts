@@ -1,4 +1,4 @@
-import {Entity, model, property, belongsTo} from '@loopback/repository';
+import {belongsTo, Entity, model, property} from '@loopback/repository';
 import {Administrador} from './administrador.model';
 import {Aficionado} from './aficionado.model';
 import {Banda} from './banda.model';
@@ -25,6 +25,12 @@ export class Usuario extends Entity {
     required: true,
   })
   contrasena: string;
+
+  @property({
+    type: 'string',
+    required: true,
+  })
+  rol: string;
 
   @belongsTo(() => Administrador)
   administradorId: string;

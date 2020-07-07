@@ -4,25 +4,32 @@ import {
   Filter,
   FilterExcludingWhere,
   repository,
-  Where,
+  Where
 } from '@loopback/repository';
 import {
-  post,
-  param,
-  get,
-  getModelSchemaRef,
-  patch,
+  del, get,
+  getModelSchemaRef, param,
+
+
+  patch, post,
+
+
+
+
   put,
-  del,
-  requestBody,
+
+  requestBody
 } from '@loopback/rest';
 import {Aficionado} from '../models';
-import {AficionadoRepository} from '../repositories';
+import {AficionadoRepository, UsuarioRepository} from '../repositories';
 
 export class AficionadoController {
   constructor(
     @repository(AficionadoRepository)
-    public aficionadoRepository : AficionadoRepository,
+    public aficionadoRepository: AficionadoRepository,
+
+    @repository(UsuarioRepository)
+    public usuarioRepository: UsuarioRepository,
   ) {}
 
   @post('/aficionados', {
@@ -46,7 +53,22 @@ export class AficionadoController {
     })
     aficionado: Omit<Aficionado, 'id'>,
   ): Promise<Aficionado> {
-    return this.aficionadoRepository.create(aficionado);
+
+    let fan = await this.aficionadoRepository.create(aficionado);
+    console.log(fan)
+
+    let u = {
+      nombreUsuario: fan.correo,
+      contrasena: fan.correo,
+      rol: 'Aficionado',
+      aficionadoId: fan.idAficionado
+    };
+
+    let user = await this.usuarioRepository.create(u);
+    user.contrasena = '';
+    /**console.log(user)*/
+    fan.usuario = user;
+    return fan
   }
 
   @get('/aficionados/count', {
