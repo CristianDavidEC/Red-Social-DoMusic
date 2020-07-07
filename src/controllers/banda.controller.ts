@@ -4,25 +4,32 @@ import {
   Filter,
   FilterExcludingWhere,
   repository,
-  Where,
+  Where
 } from '@loopback/repository';
 import {
-  post,
-  param,
-  get,
-  getModelSchemaRef,
-  patch,
+  del, get,
+  getModelSchemaRef, param,
+
+
+  patch, post,
+
+
+
+
   put,
-  del,
-  requestBody,
+
+  requestBody
 } from '@loopback/rest';
 import {Banda} from '../models';
-import {BandaRepository} from '../repositories';
+import {BandaRepository, UsuarioRepository} from '../repositories';
 
 export class BandaController {
   constructor(
     @repository(BandaRepository)
-    public bandaRepository : BandaRepository,
+    public bandaRepository: BandaRepository,
+
+    @repository(UsuarioRepository)
+    public usuarioRepository: UsuarioRepository,
   ) {}
 
   @post('/bandas', {
@@ -46,7 +53,21 @@ export class BandaController {
     })
     banda: Omit<Banda, 'id'>,
   ): Promise<Banda> {
-    return this.bandaRepository.create(banda);
+
+    let ban = await this.bandaRepository.create(banda);
+
+    let u = {
+      nombreUsuario: ban.correo,
+      contrasena: ban.correo,
+      rol: 'Banda',
+      bandaId: ban.idBanda
+    };
+
+    let user = await this.usuarioRepository.create(u);
+    user.contrasena = '';
+    /**console.log(user)*/
+    ban.usuario = user;
+    return ban
   }
 
   @get('/bandas/count', {
