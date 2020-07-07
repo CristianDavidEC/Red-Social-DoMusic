@@ -1,32 +1,33 @@
+import {authenticate} from '@loopback/authentication';
 import {
   Count,
   CountSchema,
   Filter,
   FilterExcludingWhere,
   repository,
-  Where,
+  Where
 } from '@loopback/repository';
 import {
-  post,
-  param,
-  get,
-  getModelSchemaRef,
-  patch,
+  del, get,
+  getModelSchemaRef, param,
+
+
+  patch, post,
+
+
+
+
   put,
-  del,
-  requestBody,
+
+  requestBody
 } from '@loopback/rest';
 import {Publicacion} from '../models';
 import {PublicacionRepository} from '../repositories';
-import {
-  AuthenticationBindings,
-  authenticate,
-} from '@loopback/authentication';
 
 export class PublicacionController {
   constructor(
     @repository(PublicacionRepository)
-    public publicacionRepository : PublicacionRepository,
+    public publicacionRepository: PublicacionRepository,
   ) {}
 
   @authenticate('TokenStrategy')
@@ -70,7 +71,7 @@ export class PublicacionController {
   }
 
 
- 
+  @authenticate('TokenStrategy')
   @get('/publicaciones', {
     responses: {
       '200': {

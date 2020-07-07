@@ -1,17 +1,17 @@
-import {DefaultCrudRepository, repository, BelongsToAccessor} from '@loopback/repository';
-import {Publicacion, PublicacionRelations, Evento, Encuesta, MusicoProfesional, Banda} from '../models';
+import {Getter, inject} from '@loopback/core';
+import {BelongsToAccessor, DefaultCrudRepository, repository} from '@loopback/repository';
 import {MongadbDataSource} from '../datasources';
-import {inject, Getter} from '@loopback/core';
-import {EventoRepository} from './evento.repository';
-import {EncuestaRepository} from './encuesta.repository';
-import {MusicoProfesionalRepository} from './musico-profesional.repository';
+import {Banda, Encuesta, Evento, MusicoProfesional, Publicacion, PublicacionRelations} from '../models';
 import {BandaRepository} from './banda.repository';
+import {EncuestaRepository} from './encuesta.repository';
+import {EventoRepository} from './evento.repository';
+import {MusicoProfesionalRepository} from './musico-profesional.repository';
 
 export class PublicacionRepository extends DefaultCrudRepository<
   Publicacion,
   typeof Publicacion.prototype.idPublicacion,
   PublicacionRelations
-> {
+  > {
 
   public readonly evento: BelongsToAccessor<Evento, typeof Publicacion.prototype.idPublicacion>;
 
