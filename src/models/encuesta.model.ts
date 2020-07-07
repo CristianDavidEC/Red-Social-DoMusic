@@ -1,4 +1,5 @@
-import {Entity, model, property} from '@loopback/repository';
+import {Entity, model, property, hasOne} from '@loopback/repository';
+import {Publicacion} from './publicacion.model';
 
 @model()
 export class Encuesta extends Entity {
@@ -27,6 +28,8 @@ export class Encuesta extends Entity {
   })
   respuestaUsuario?: string;
 
+  @hasOne(() => Publicacion)
+  publicacion: Publicacion;
 
   constructor(data?: Partial<Encuesta>) {
     super(data);

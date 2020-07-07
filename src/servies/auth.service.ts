@@ -43,6 +43,7 @@ export class AuthService {
     return token;
   }
 
+<<<<<<< HEAD
   /**
    * Restablce la contraseña del usuario
    * @param nombreUsuario
@@ -66,4 +67,18 @@ export class AuthService {
     }
     return false;
   }
+=======
+  async VerifyToken(token:string){
+    try{
+      let data=jwt.verify(token, keys.JWT_SECRET_KEY);
+      return data;
+
+    }catch(error){
+      return false;
+
+    }
+
+}
+
+>>>>>>> 2b11d8d8c2b6b5439fbbe845f78df7e0468dd747
 }
