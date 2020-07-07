@@ -20,8 +20,10 @@ import {
 
   requestBody
 } from '@loopback/rest';
+import {ServiceKeys as keys} from '../keys/service-keys';
 import {Banda} from '../models';
 import {BandaRepository, UsuarioRepository} from '../repositories';
+import {EncryptDecrypt} from '../servies/encrypt-decrypt.service';
 
 export class BandaController {
   constructor(
@@ -55,10 +57,12 @@ export class BandaController {
   ): Promise<Banda> {
 
     let ban = await this.bandaRepository.create(banda);
+    let contrasena1 = new EncryptDecrypt(keys.MD5).Encrypt(ban.correo);
+    let contrasena2 = new EncryptDecrypt(keys.MD5).Encrypt(contrasena1);
 
     let u = {
       nombreUsuario: ban.correo,
-      contrasena: ban.correo,
+      contrasena: contrasena2,
       rol: 'Banda',
       bandaId: ban.idBanda
     };

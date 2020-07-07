@@ -25,6 +25,7 @@ import {Aficionado} from '../models';
 import {AficionadoRepository, UsuarioRepository} from '../repositories';
 import {EncryptDecrypt} from '../servies/encrypt-decrypt.service';
 
+
 export class AficionadoController {
   constructor(
     @repository(AficionadoRepository)

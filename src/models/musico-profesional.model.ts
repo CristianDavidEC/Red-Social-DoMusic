@@ -1,6 +1,7 @@
-import {Entity, hasOne, model, property, belongsTo} from '@loopback/repository';
-import {Usuario} from './usuario.model';
+import {belongsTo, Entity, hasOne, model, property} from '@loopback/repository';
 import {Banda} from './banda.model';
+import {Usuario} from './usuario.model';
+
 
 @model()
 export class MusicoProfesional extends Entity {

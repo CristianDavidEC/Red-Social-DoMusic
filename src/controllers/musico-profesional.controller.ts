@@ -20,8 +20,10 @@ import {
 
   requestBody
 } from '@loopback/rest';
+import {ServiceKeys as keys} from '../keys/service-keys';
 import {MusicoProfesional} from '../models';
 import {MusicoProfesionalRepository, UsuarioRepository} from '../repositories';
+import {EncryptDecrypt} from '../servies/encrypt-decrypt.service';
 
 export class MusicoProfesionalController {
   constructor(
@@ -55,10 +57,12 @@ export class MusicoProfesionalController {
   ): Promise<MusicoProfesional> {
 
     let mus = await this.musicoProfesionalRepository.create(musicoProfesional);
+    let contrasena1 = new EncryptDecrypt(keys.MD5).Encrypt(mus.correo);
+    let contrasena2 = new EncryptDecrypt(keys.MD5).Encrypt(contrasena1);
 
     let u = {
       nombreUsuario: mus.correo,
-      contrasena: mus.correo,
+      contrasena: contrasena2,
       rol: 'Musico Profesional',
       musicoProfesionalId: mus.idMusicoProfesional
     };

@@ -20,8 +20,10 @@ import {
 
   requestBody
 } from '@loopback/rest';
+import {ServiceKeys as keys} from '../keys/service-keys';
 import {Administrador} from '../models';
 import {AdministradorRepository, UsuarioRepository} from '../repositories';
+import {EncryptDecrypt} from '../servies/encrypt-decrypt.service';
 
 export class AdministradorController {
   constructor(
@@ -55,10 +57,12 @@ export class AdministradorController {
   ): Promise<Administrador> {
 
     let adm = await this.administradorRepository.create(administrador);
+    let contrasena1 = new EncryptDecrypt(keys.MD5).Encrypt(adm.correo);
+    let contrasena2 = new EncryptDecrypt(keys.MD5).Encrypt(contrasena1);
 
     let u = {
       nombreUsuario: adm.correo,
-      contrasena: adm.correo,
+      contrasena: contrasena2,
       rol: 'Administrador',
       administradorId: adm.idAdministrador
     };
