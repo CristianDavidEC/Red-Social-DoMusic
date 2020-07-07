@@ -18,6 +18,10 @@ import {
 } from '@loopback/rest';
 import {Publicacion} from '../models';
 import {PublicacionRepository} from '../repositories';
+import {
+  AuthenticationBindings,
+  authenticate,
+} from '@loopback/authentication';
 
 export class PublicacionController {
   constructor(
@@ -25,6 +29,7 @@ export class PublicacionController {
     public publicacionRepository : PublicacionRepository,
   ) {}
 
+  @authenticate('TokenStrategy')
   @post('/publicaciones', {
     responses: {
       '200': {
@@ -49,6 +54,7 @@ export class PublicacionController {
     return this.publicacionRepository.create(publicacion);
   }
 
+  @authenticate('TokenStrategy')
   @get('/publicaciones/count', {
     responses: {
       '200': {
@@ -63,6 +69,8 @@ export class PublicacionController {
     return this.publicacionRepository.count(where);
   }
 
+
+ 
   @get('/publicaciones', {
     responses: {
       '200': {

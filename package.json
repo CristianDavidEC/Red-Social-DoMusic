@@ -45,7 +45,7 @@
     "!*/__tests__"
   ],
   "dependencies": {
-    "@loopback/authentication": "^4.2.7",
+    "@loopback/authentication": "^1.2.1",
     "@loopback/boot": "^2.3.3",
     "@loopback/core": "^2.8.0",
     "@loopback/openapi-v3": "^3.4.3",
