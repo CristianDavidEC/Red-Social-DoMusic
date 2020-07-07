@@ -1,4 +1,4 @@
-import {DefaultCrudRepository, repository, BelongsToAccessor} from '@loopback/repository';
+import {DefaultCrudRepository, repository, HasOneRepositoryFactory, BelongsToAccessor} from '@loopback/repository';
 import {MusicoProfesional, MusicoProfesionalRelations, Usuario, Banda} from '../models';
 import {MongadbDataSource} from '../datasources';
 import {inject, Getter} from '@loopback/core';
@@ -11,7 +11,7 @@ export class MusicoProfesionalRepository extends DefaultCrudRepository<
   MusicoProfesionalRelations
 > {
 
-  public readonly usuario: BelongsToAccessor<Usuario, typeof MusicoProfesional.prototype.idMusicoProfesional>;
+  public readonly usuario: HasOneRepositoryFactory<Usuario, typeof MusicoProfesional.prototype.idMusicoProfesional>;
 
   public readonly banda: BelongsToAccessor<Banda, typeof MusicoProfesional.prototype.idMusicoProfesional>;
 
@@ -21,7 +21,7 @@ export class MusicoProfesionalRepository extends DefaultCrudRepository<
     super(MusicoProfesional, dataSource);
     this.banda = this.createBelongsToAccessorFor('banda', bandaRepositoryGetter,);
     this.registerInclusionResolver('banda', this.banda.inclusionResolver);
-    this.usuario = this.createBelongsToAccessorFor('usuario', usuarioRepositoryGetter,);
+    this.usuario = this.createHasOneRepositoryFactoryFor('usuario', usuarioRepositoryGetter);
     this.registerInclusionResolver('usuario', this.usuario.inclusionResolver);
   }
 }

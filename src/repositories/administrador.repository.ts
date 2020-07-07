@@ -1,4 +1,4 @@
-import {DefaultCrudRepository, repository, BelongsToAccessor} from '@loopback/repository';
+import {DefaultCrudRepository, repository, HasOneRepositoryFactory} from '@loopback/repository';
 import {Administrador, AdministradorRelations, Usuario} from '../models';
 import {MongadbDataSource} from '../datasources';
 import {inject, Getter} from '@loopback/core';
@@ -10,13 +10,13 @@ export class AdministradorRepository extends DefaultCrudRepository<
   AdministradorRelations
 > {
 
-  public readonly usuario: BelongsToAccessor<Usuario, typeof Administrador.prototype.idAdministrador>;
+  public readonly usuario: HasOneRepositoryFactory<Usuario, typeof Administrador.prototype.idAdministrador>;
 
   constructor(
     @inject('datasources.mongadb') dataSource: MongadbDataSource, @repository.getter('UsuarioRepository') protected usuarioRepositoryGetter: Getter<UsuarioRepository>,
   ) {
     super(Administrador, dataSource);
-    this.usuario = this.createBelongsToAccessorFor('usuario', usuarioRepositoryGetter,);
+    this.usuario = this.createHasOneRepositoryFactoryFor('usuario', usuarioRepositoryGetter);
     this.registerInclusionResolver('usuario', this.usuario.inclusionResolver);
   }
 }

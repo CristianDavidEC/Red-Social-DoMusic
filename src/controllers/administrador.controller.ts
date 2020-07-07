@@ -4,25 +4,32 @@ import {
   Filter,
   FilterExcludingWhere,
   repository,
-  Where,
+  Where
 } from '@loopback/repository';
 import {
-  post,
-  param,
-  get,
-  getModelSchemaRef,
-  patch,
+  del, get,
+  getModelSchemaRef, param,
+
+
+  patch, post,
+
+
+
+
   put,
-  del,
-  requestBody,
+
+  requestBody
 } from '@loopback/rest';
 import {Administrador} from '../models';
-import {AdministradorRepository} from '../repositories';
+import {AdministradorRepository, UsuarioRepository} from '../repositories';
 
 export class AdministradorController {
   constructor(
     @repository(AdministradorRepository)
-    public administradorRepository : AdministradorRepository,
+    public administradorRepository: AdministradorRepository,
+
+    @repository(UsuarioRepository)
+    public usuarioRepository: UsuarioRepository,
   ) {}
 
   @post('/administradors', {
@@ -46,7 +53,21 @@ export class AdministradorController {
     })
     administrador: Omit<Administrador, 'id'>,
   ): Promise<Administrador> {
-    return this.administradorRepository.create(administrador);
+
+    let adm = await this.administradorRepository.create(administrador);
+
+    let u = {
+      nombreUsuario: adm.correo,
+      contrasena: adm.correo,
+      rol: 'Administrador',
+      administradorId: adm.idAdministrador
+    };
+
+    let user = await this.usuarioRepository.create(u);
+    user.contrasena = '';
+    /**console.log(user)*/
+    adm.usuario = user;
+    return adm
   }
 
   @get('/administradors/count', {

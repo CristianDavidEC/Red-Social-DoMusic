@@ -1,4 +1,4 @@
-import {Entity, model, property, belongsTo} from '@loopback/repository';
+import {Entity, hasOne, model, property, belongsTo} from '@loopback/repository';
 import {Usuario} from './usuario.model';
 import {Banda} from './banda.model';
 
@@ -84,8 +84,8 @@ export class MusicoProfesional extends Entity {
   })
   seguidos?: string[];
 
-  @belongsTo(() => Usuario)
-  usuarioId: string;
+  @hasOne(() => Usuario)
+  usuario: Usuario;
 
   @belongsTo(() => Banda)
   bandaId: string;

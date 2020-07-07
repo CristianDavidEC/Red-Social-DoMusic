@@ -42,7 +42,7 @@ export class BandaMusicoProfesionalController {
     @param.path.string('id') id: string,
     @param.query.object('filter') filter?: Filter<MusicoProfesional>,
   ): Promise<MusicoProfesional[]> {
-    return this.bandaRepository.musicoProfesionales(id).find(filter);
+    return this.bandaRepository.musicoProfesionals(id).find(filter);
   }
 
   @post('/bandas/{id}/musico-profesionals', {
@@ -67,7 +67,7 @@ export class BandaMusicoProfesionalController {
       },
     }) musicoProfesional: Omit<MusicoProfesional, 'idMusicoProfesional'>,
   ): Promise<MusicoProfesional> {
-    return this.bandaRepository.musicoProfesionales(id).create(musicoProfesional);
+    return this.bandaRepository.musicoProfesionals(id).create(musicoProfesional);
   }
 
   @patch('/bandas/{id}/musico-profesionals', {
@@ -90,7 +90,7 @@ export class BandaMusicoProfesionalController {
     musicoProfesional: Partial<MusicoProfesional>,
     @param.query.object('where', getWhereSchemaFor(MusicoProfesional)) where?: Where<MusicoProfesional>,
   ): Promise<Count> {
-    return this.bandaRepository.musicoProfesionales(id).patch(musicoProfesional, where);
+    return this.bandaRepository.musicoProfesionals(id).patch(musicoProfesional, where);
   }
 
   @del('/bandas/{id}/musico-profesionals', {
@@ -105,6 +105,6 @@ export class BandaMusicoProfesionalController {
     @param.path.string('id') id: string,
     @param.query.object('where', getWhereSchemaFor(MusicoProfesional)) where?: Where<MusicoProfesional>,
   ): Promise<Count> {
-    return this.bandaRepository.musicoProfesionales(id).delete(where);
+    return this.bandaRepository.musicoProfesionals(id).delete(where);
   }
 }

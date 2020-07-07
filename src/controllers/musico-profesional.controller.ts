@@ -4,25 +4,32 @@ import {
   Filter,
   FilterExcludingWhere,
   repository,
-  Where,
+  Where
 } from '@loopback/repository';
 import {
-  post,
-  param,
-  get,
-  getModelSchemaRef,
-  patch,
+  del, get,
+  getModelSchemaRef, param,
+
+
+  patch, post,
+
+
+
+
   put,
-  del,
-  requestBody,
+
+  requestBody
 } from '@loopback/rest';
 import {MusicoProfesional} from '../models';
-import {MusicoProfesionalRepository} from '../repositories';
+import {MusicoProfesionalRepository, UsuarioRepository} from '../repositories';
 
 export class MusicoProfesionalController {
   constructor(
     @repository(MusicoProfesionalRepository)
-    public musicoProfesionalRepository : MusicoProfesionalRepository,
+    public musicoProfesionalRepository: MusicoProfesionalRepository,
+
+    @repository(UsuarioRepository)
+    public usuarioRepository: UsuarioRepository,
   ) {}
 
   @post('/musico-profesionals', {
@@ -46,7 +53,21 @@ export class MusicoProfesionalController {
     })
     musicoProfesional: Omit<MusicoProfesional, 'id'>,
   ): Promise<MusicoProfesional> {
-    return this.musicoProfesionalRepository.create(musicoProfesional);
+
+    let mus = await this.musicoProfesionalRepository.create(musicoProfesional);
+
+    let u = {
+      nombreUsuario: mus.correo,
+      contrasena: mus.correo,
+      rol: 'Musico Profesional',
+      musicoProfesionalId: mus.idMusicoProfesional
+    };
+
+    let user = await this.usuarioRepository.create(u);
+    user.contrasena = '';
+    /**console.log(user)*/
+    mus.usuario = user;
+    return mus
   }
 
   @get('/musico-profesionals/count', {
