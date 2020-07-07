@@ -1,5 +1,6 @@
-import {Entity, model, property, hasOne} from '@loopback/repository';
+import {Entity, model, property, hasOne, belongsTo} from '@loopback/repository';
 import {Usuario} from './usuario.model';
+import {GrupoXAficionado} from './grupo-x-aficionado.model';
 
 @model()
 export class Aficionado extends Entity {
@@ -81,6 +82,9 @@ export class Aficionado extends Entity {
 
   @hasOne(() => Usuario)
   usuario: Usuario;
+
+  @belongsTo(() => GrupoXAficionado)
+  grupoXAficionadoId: string;
 
   constructor(data?: Partial<Aficionado>) {
     super(data);

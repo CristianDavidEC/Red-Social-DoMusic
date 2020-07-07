@@ -1,8 +1,12 @@
-import {belongsTo, Entity, model, property} from '@loopback/repository';
+import {belongsTo, Entity, model, property, hasMany} from '@loopback/repository';
 import {Administrador} from './administrador.model';
 import {Aficionado} from './aficionado.model';
 import {Banda} from './banda.model';
 import {MusicoProfesional} from './musico-profesional.model';
+import {DenunciaXusario} from './denuncia-xusario.model';
+import {DenunciaXPubli} from './denuncia-x-publi.model';
+import {Mensaje} from './mensaje.model';
+import {Notificacion} from './notificacion.model';
 
 @model()
 export class Usuario extends Entity {
@@ -43,6 +47,18 @@ export class Usuario extends Entity {
 
   @belongsTo(() => MusicoProfesional)
   musicoProfesionalId: string;
+
+  @hasMany(() => DenunciaXusario)
+  denunciaXusarios: DenunciaXusario[];
+
+  @hasMany(() => DenunciaXPubli)
+  denunciaXPublis: DenunciaXPubli[];
+
+  @belongsTo(() => Mensaje)
+  mensajeId: string;
+
+  @belongsTo(() => Notificacion)
+  notificacionId: string;
 
   constructor(data?: Partial<Usuario>) {
     super(data);
