@@ -178,6 +178,11 @@ export class MusicoProfesionalController {
     @param.path.string('id') id: string,
     @requestBody() musicoProfesional: MusicoProfesional,
   ): Promise<void> {
+    let u = await this.usuarioRepository.findOne({where: {musicoProfesionalId: musicoProfesional.idMusicoProfesional}});
+    if (u) {
+      u.nombreUsuario = musicoProfesional.correo;
+      await this.usuarioRepository.replaceById(u.idUsuario, u);
+    }
     await this.musicoProfesionalRepository.replaceById(id, musicoProfesional);
   }
 

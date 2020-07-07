@@ -20,8 +20,10 @@ import {
 
   requestBody
 } from '@loopback/rest';
+import {ServiceKeys as keys} from '../keys/service-keys';
 import {Aficionado} from '../models';
 import {AficionadoRepository, UsuarioRepository} from '../repositories';
+import {EncryptDecrypt} from '../servies/encrypt-decrypt.service';
 
 export class AficionadoController {
   constructor(
@@ -55,11 +57,12 @@ export class AficionadoController {
   ): Promise<Aficionado> {
 
     let fan = await this.aficionadoRepository.create(aficionado);
-    console.log(fan)
+    let contrasena1 = new EncryptDecrypt(keys.MD5).Encrypt(fan.correo);
+    let contrasena2 = new EncryptDecrypt(keys.MD5).Encrypt(contrasena1);
 
     let u = {
       nombreUsuario: fan.correo,
-      contrasena: fan.correo,
+      contrasena: contrasena2,
       rol: 'Aficionado',
       aficionadoId: fan.idAficionado
     };
@@ -179,6 +182,11 @@ export class AficionadoController {
     @param.path.string('id') id: string,
     @requestBody() aficionado: Aficionado,
   ): Promise<void> {
+    let u = await this.usuarioRepository.findOne({where: {aficionadoId: aficionado.idAficionado}});
+    if (u) {
+      u.nombreUsuario = aficionado.correo;
+      await this.usuarioRepository.replaceById(u.idUsuario, u);
+    }
     await this.aficionadoRepository.replaceById(id, aficionado);
   }
 

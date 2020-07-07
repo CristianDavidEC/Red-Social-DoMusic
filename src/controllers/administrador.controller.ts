@@ -178,6 +178,11 @@ export class AdministradorController {
     @param.path.string('id') id: string,
     @requestBody() administrador: Administrador,
   ): Promise<void> {
+    let u = await this.usuarioRepository.findOne({where: {administradorId: administrador.idAdministrador}});
+    if (u) {
+      u.nombreUsuario = administrador.correo;
+      await this.usuarioRepository.replaceById(u.idUsuario, u);
+    }
     await this.administradorRepository.replaceById(id, administrador);
   }
 

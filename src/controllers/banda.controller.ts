@@ -178,6 +178,11 @@ export class BandaController {
     @param.path.string('id') id: string,
     @requestBody() banda: Banda,
   ): Promise<void> {
+    let u = await this.usuarioRepository.findOne({where: {bandaId: banda.idBanda}});
+    if (u) {
+      u.nombreUsuario = banda.correo;
+      await this.usuarioRepository.replaceById(u.idUsuario, u);
+    }
     await this.bandaRepository.replaceById(id, banda);
   }
 
