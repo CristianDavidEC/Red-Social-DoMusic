@@ -3,8 +3,10 @@
 import {repository} from '@loopback/repository';
 import {HttpErrors, post, requestBody} from '@loopback/rest';
 /**import {Credentials} from 'crypto';**/
-import {UsuarioRepository} from '../repositories';
+import {UsuarioRepository, AficionadoRepository} from '../repositories';
 import {AuthService} from '../servies/auth.service';
+import { SmsNotificacion, Aficionado } from '../models';
+import { NotificacionService } from '../servies/notificacion.service';
 
 // import {inject} from '@loopback/core';
 
@@ -23,8 +25,10 @@ export class UserController {
   constructor(
     @repository(UsuarioRepository)
 
-    public usuarioRepository: UsuarioRepository
-
+    public usuarioRepository: UsuarioRepository,
+    
+    @repository(AficionadoRepository)
+    public aficionadoRepository: AficionadoRepository
 
   ) {
     this.authService = new AuthService(this.usuarioRepository);
@@ -72,9 +76,21 @@ export class UserController {
 
       switch (recuperaDatosContrasena.tipo) {
         case 1:
-          //Envio de Sms
-          console.log('Enviando mensaje ' + contrasenaAleatoria)
-          return true;
+          let aficionado = await this.aficionadoRepository.findOne({where: {correo: recuperaDatosContrasena.nombreUsuario }})
+          if (aficionado){
+          let notificacion = new SmsNotificacion({
+           body: `su nueva contraseña es: ${contrasenaAleatoria}`,
+           to: aficionado.celular  
+          });
+          let sms = await new NotificacionService().SmsNotificacion(notificacion);
+          if(sms){
+            console.log("el mensaje fue enviado");
+            return true;
+          }
+          throw new HttpErrors["400"]("el numero telefonico no fue encontrado");
+          
+        }
+        throw new HttpErrors[400]("el usuario no fue encontrado");
           break;
         case 2:
           //Envio de Email
