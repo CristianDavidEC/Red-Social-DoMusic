@@ -30,7 +30,7 @@ export class PublicacionController {
     public publicacionRepository: PublicacionRepository,
   ) {}
 
-  @authenticate('TokenStrategy')
+  @authenticate('TokenMusProfesionalStrategy' && 'TokenBandaStrategy' && 'TokenAdminStratery')
   @post('/publicaciones', {
     responses: {
       '200': {
@@ -71,7 +71,6 @@ export class PublicacionController {
   }
 
 
-  @authenticate('TokenStrategy')
   @get('/publicaciones', {
     responses: {
       '200': {

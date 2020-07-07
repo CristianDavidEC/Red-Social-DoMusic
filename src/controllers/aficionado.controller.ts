@@ -35,6 +35,7 @@ export class AficionadoController {
     public usuarioRepository: UsuarioRepository,
   ) {}
 
+
   @post('/aficionados', {
     responses: {
       '200': {
