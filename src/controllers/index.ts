@@ -14,3 +14,4 @@ export * from './usuario-musico-profesional.controller';
 export * from './usuario.controller';
 export * from './banda-musico-profesional.controller';
 export * from './musico-profesional-banda.controller';
+export * from './user.controller';
