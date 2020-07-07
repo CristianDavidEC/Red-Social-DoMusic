@@ -1,8 +1,8 @@
-import {Entity, model, property, hasOne} from '@loopback/repository';
-import {Aficionado} from './aficionado.model';
-import {MusicoProfesional} from './musico-profesional.model';
-import {Banda} from './banda.model';
+import {Entity, model, property, belongsTo} from '@loopback/repository';
 import {Administrador} from './administrador.model';
+import {Aficionado} from './aficionado.model';
+import {Banda} from './banda.model';
+import {MusicoProfesional} from './musico-profesional.model';
 
 @model()
 export class Usuario extends Entity {
@@ -26,17 +26,17 @@ export class Usuario extends Entity {
   })
   contrasena: string;
 
-  @hasOne(() => Aficionado)
-  aficionado: Aficionado;
+  @belongsTo(() => Administrador)
+  administradorId: string;
 
-  @hasOne(() => MusicoProfesional)
-  musicoProfesional: MusicoProfesional;
+  @belongsTo(() => Aficionado)
+  aficionadoId: string;
 
-  @hasOne(() => Banda)
-  banda: Banda;
+  @belongsTo(() => Banda)
+  bandaId: string;
 
-  @hasOne(() => Administrador)
-  administrador: Administrador;
+  @belongsTo(() => MusicoProfesional)
+  musicoProfesionalId: string;
 
   constructor(data?: Partial<Usuario>) {
     super(data);

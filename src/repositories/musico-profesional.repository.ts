@@ -1,9 +1,8 @@
-import {DefaultCrudRepository, repository, BelongsToAccessor} from '@loopback/repository';
-import {MusicoProfesional, MusicoProfesionalRelations, Usuario, Banda} from '../models';
+import {DefaultCrudRepository, repository, HasOneRepositoryFactory} from '@loopback/repository';
+import {MusicoProfesional, MusicoProfesionalRelations, Usuario} from '../models';
 import {MongadbDataSource} from '../datasources';
 import {inject, Getter} from '@loopback/core';
 import {UsuarioRepository} from './usuario.repository';
-import {BandaRepository} from './banda.repository';
 
 export class MusicoProfesionalRepository extends DefaultCrudRepository<
   MusicoProfesional,
@@ -11,17 +10,13 @@ export class MusicoProfesionalRepository extends DefaultCrudRepository<
   MusicoProfesionalRelations
 > {
 
-  public readonly usuario: BelongsToAccessor<Usuario, typeof MusicoProfesional.prototype.idMusicoProfesional>;
-
-  public readonly banda: BelongsToAccessor<Banda, typeof MusicoProfesional.prototype.idMusicoProfesional>;
+  public readonly usuario: HasOneRepositoryFactory<Usuario, typeof MusicoProfesional.prototype.idMusicoProfesional>;
 
   constructor(
-    @inject('datasources.mongadb') dataSource: MongadbDataSource, @repository.getter('UsuarioRepository') protected usuarioRepositoryGetter: Getter<UsuarioRepository>, @repository.getter('BandaRepository') protected bandaRepositoryGetter: Getter<BandaRepository>,
+    @inject('datasources.mongadb') dataSource: MongadbDataSource, @repository.getter('UsuarioRepository') protected usuarioRepositoryGetter: Getter<UsuarioRepository>,
   ) {
     super(MusicoProfesional, dataSource);
-    this.banda = this.createBelongsToAccessorFor('banda', bandaRepositoryGetter,);
-    this.registerInclusionResolver('banda', this.banda.inclusionResolver);
-    this.usuario = this.createBelongsToAccessorFor('usuario', usuarioRepositoryGetter,);
+    this.usuario = this.createHasOneRepositoryFactoryFor('usuario', usuarioRepositoryGetter);
     this.registerInclusionResolver('usuario', this.usuario.inclusionResolver);
   }
 }
