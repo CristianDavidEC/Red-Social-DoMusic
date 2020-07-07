@@ -7,3 +7,4 @@ export * from './publicacion.model';
 export * from './evento.model';
 export * from './encuesta.model';
 export * from './sms-notificacion.model';
+export * from './notoficacion-email.model';
