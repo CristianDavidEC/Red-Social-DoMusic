@@ -1,4 +1,6 @@
 import {repository} from '@loopback/repository';
+import {generate as generator} from 'generate-password';
+import {LlaveContrasenas as llaveCont} from '../keys/llave-contraseña';
 import {ServiceKeys as keys, ServiceKeys} from '../keys/service-keys';
 import {Usuario} from '../models';
 import {UsuarioRepository} from '../repositories';
@@ -12,6 +14,11 @@ export class AuthService {
   ) {
 
   }
+  /**
+   *
+   * @param nombreUsuario
+   * @param contrasena
+   */
   async Identify(nombreUsuario: string, contrasena: string): Promise<Usuario | false> {
     let usuario = await this.usuarioRepository.findOne({where: {nombreUsuario: nombreUsuario}});
     if (usuario) {
@@ -34,5 +41,29 @@ export class AuthService {
     },
       keys.JWT_SECRET_KEY);
     return token;
+  }
+
+  /**
+   * Restablce la contraseña del usuario
+   * @param nombreUsuario
+   */
+  async ReseteoContrasena(nombreUsuario: string): Promise<String | false> {
+    let usuario = await this.usuarioRepository.findOne({where: {nombreUsuario: nombreUsuario}});
+
+    if (usuario) {
+      let contrasenaAleatoria = generator({
+        length: llaveCont.LONGITUD,
+        numbers: llaveCont.NUMBERS,
+        lowercase: llaveCont.LOWERCASE,
+        uppercase: llaveCont.UPPERCASE
+      });
+
+      let crypter = new EncryptDecrypt(keys.LOGIN_CRYPT_METHOD);
+      let contrasena = crypter.Encrypt(crypter.Encrypt(contrasenaAleatoria))
+      usuario.contrasena = contrasena;
+      this.usuarioRepository.replaceById(usuario.idUsuario, usuario);
+      return contrasenaAleatoria;
+    }
+    return false;
   }
 }
