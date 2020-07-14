@@ -1,8 +1,6 @@
 import {belongsTo, Entity, hasMany, model, property} from '@loopback/repository';
 import {Publicacion} from './publicacion.model';
 
-/*import {Comentario} from './comentario.model';**/
-
 @model()
 export class Comentario extends Entity {
   @property({

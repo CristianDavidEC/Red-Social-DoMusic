@@ -1,15 +1,14 @@
-import {DefaultCrudRepository, repository, HasManyRepositoryFactory, BelongsToAccessor} from '@loopback/repository';
-import {Comentario, ComentarioRelations, Publicacion} from '../models';
+import {Getter, inject} from '@loopback/core';
+import {BelongsToAccessor, DefaultCrudRepository, HasManyRepositoryFactory, repository} from '@loopback/repository';
 import {MongadbDataSource} from '../datasources';
-import {inject, Getter} from '@loopback/core';
-import {ComentarioRepository} from './comentario.repository';
+import {Comentario, ComentarioRelations, Publicacion} from '../models';
 import {PublicacionRepository} from './publicacion.repository';
 
 export class ComentarioRepository extends DefaultCrudRepository<
   Comentario,
   typeof Comentario.prototype.idComentario,
   ComentarioRelations
-> {
+  > {
 
   public readonly comentarios: HasManyRepositoryFactory<Comentario, typeof Comentario.prototype.idComentario>;
 

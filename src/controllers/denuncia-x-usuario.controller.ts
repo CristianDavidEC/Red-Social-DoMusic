@@ -4,17 +4,21 @@ import {
   Filter,
   FilterExcludingWhere,
   repository,
-  Where,
+  Where
 } from '@loopback/repository';
 import {
-  post,
-  param,
-  get,
-  getModelSchemaRef,
-  patch,
+  del, get,
+  getModelSchemaRef, param,
+
+
+  patch, post,
+
+
+
+
   put,
-  del,
-  requestBody,
+
+  requestBody
 } from '@loopback/rest';
 import {DenunciaXusario} from '../models';
 import {DenunciaXusarioRepository} from '../repositories';
@@ -22,7 +26,7 @@ import {DenunciaXusarioRepository} from '../repositories';
 export class DenunciaXUsuarioController {
   constructor(
     @repository(DenunciaXusarioRepository)
-    public denunciaXusarioRepository : DenunciaXusarioRepository,
+    public denunciaXusarioRepository: DenunciaXusarioRepository,
   ) {}
 
   @post('/denuncia-xusarios', {
@@ -39,12 +43,12 @@ export class DenunciaXUsuarioController {
         'application/json': {
           schema: getModelSchemaRef(DenunciaXusario, {
             title: 'NewDenunciaXusario',
-            exclude: ['idDenunciaXUsario'],
+            exclude: ['idDenunciaXusuario']
           }),
         },
       },
     })
-    denunciaXusario: Omit<DenunciaXusario, 'idDenunciaXUsario'>,
+    denunciaXusario: Omit<DenunciaXusario, 'idDenunciaXusuario'>,
   ): Promise<DenunciaXusario> {
     return this.denunciaXusarioRepository.create(denunciaXusario);
   }

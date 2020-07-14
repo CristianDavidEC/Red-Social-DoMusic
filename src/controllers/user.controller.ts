@@ -2,7 +2,7 @@
 
 import {repository} from '@loopback/repository';
 import {HttpErrors, post, requestBody} from '@loopback/rest';
-import {NotoficacionEmail, SmsNotificacion} from '../models';
+import {NotificacionEmail, SmsNotificacion} from '../models';
 /**import {Credentials} from 'crypto';**/
 import {AficionadoRepository, UsuarioRepository} from '../repositories';
 import {AuthService} from '../servies/auth.service';
@@ -77,16 +77,18 @@ export class UserController {
       switch (recuperaDatosContrasena.tipo) {
         case 1:
           if (aficionado) {
+
             let notificacion = new SmsNotificacion({
               body: `su nueva contraseña es: ${contrasenaAleatoria}`,
               to: aficionado.celular
             });
+            console.log(notificacion)
             let sms = await new NotificacionService().SmsNotificacion(notificacion);
             if (sms) {
               console.log("el mensaje fue enviado");
               return true;
             }
-            throw new HttpErrors["400"]("el numero telefonico no fue encontrado");
+            throw new HttpErrors["400"]("el número telefónico no fue encontrado");
 
           }
           throw new HttpErrors[400]("el usuario no fue encontrado");
@@ -95,7 +97,7 @@ export class UserController {
           //Envio de Email
 
           if (aficionado) {
-            let notificacion = new NotoficacionEmail({
+            let notificacion = new NotificacionEmail({
               textBody: `su nueva contraseña es: ${contrasenaAleatoria}`,
               htmlBody: `su nueva contraseña es: ${contrasenaAleatoria}`,
               to: aficionado.correo,

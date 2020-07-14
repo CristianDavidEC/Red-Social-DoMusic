@@ -1,5 +1,6 @@
 import {NotificacionDatasource} from '../datasources/notificacion.datasource';
-import {NotoficacionEmail, SmsNotificacion} from '../models';
+import {SmsNotificacion} from '../models';
+import {NotificacionEmail} from '../models/notificacion-email.model';
 const twilio = require('twilio');
 const sgMail = require('@sendgrid/mail');
 
@@ -21,6 +22,9 @@ export class NotificacionService {
         })
         .then((message: any) => {
           console.log(message)
+        })
+        .catch((error: any) => {
+          console.log(error)
         });
       return true;
     } catch (error) {
@@ -28,7 +32,7 @@ export class NotificacionService {
     }
   }
 
-  async NotificacionEmail(notificacion: NotoficacionEmail): Promise<boolean> {
+  async NotificacionEmail(notificacion: NotificacionEmail): Promise<boolean> {
     try {
       sgMail.setApiKey(NotificacionDatasource.SENDGRID_API_KEY);
       const msg = {

@@ -1,7 +1,7 @@
 import {Model, model, property} from '@loopback/repository';
 
 @model()
-export class NotoficacionEmail extends Model {
+export class NotificacionEmail extends Model {
   @property({
     type: 'string',
     required: true,
@@ -27,13 +27,13 @@ export class NotoficacionEmail extends Model {
   textBody: string;
 
 
-  constructor(data?: Partial<NotoficacionEmail>) {
+  constructor(data?: Partial<NotificacionEmail>) {
     super(data);
   }
 }
 
-export interface NotoficacionEmailRelations {
+export interface NotificacionEmailRelations {
   // describe navigational properties here
 }
 
-export type NotoficacionEmailWithRelations = NotoficacionEmail & NotoficacionEmailRelations;
+export type NotificacionEmailWithRelations = NotificacionEmail & NotificacionEmailRelations;
