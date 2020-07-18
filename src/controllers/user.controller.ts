@@ -81,7 +81,7 @@ export class UserController {
               body: `su nueva contraseña es: ${contrasenaAleatoria}`,
               to: aficionado.celular
             });
-            console.log(notificacion)
+
             let sms = await new NotificacionService().SmsNotificacion(notificacion);
             if (sms) {
               console.log("el mensaje fue enviado");
