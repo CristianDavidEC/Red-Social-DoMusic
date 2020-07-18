@@ -77,7 +77,6 @@ export class UserController {
       switch (recuperaDatosContrasena.tipo) {
         case 1:
           if (aficionado) {
-
             let notificacion = new SmsNotificacion({
               body: `su nueva contraseña es: ${contrasenaAleatoria}`,
               to: aficionado.celular
@@ -88,7 +87,7 @@ export class UserController {
               console.log("el mensaje fue enviado");
               return true;
             }
-            throw new HttpErrors["400"]("el número telefónico no fue encontrado");
+            throw new HttpErrors["400"](`el número telefónico no fue encontrado ${aficionado.celular}`);
 
           }
           throw new HttpErrors[400]("el usuario no fue encontrado");
