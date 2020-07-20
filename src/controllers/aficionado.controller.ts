@@ -80,10 +80,13 @@ export class AficionadoController {
 
     let user = await this.usuarioRepository.create(u);
 
+    console.log(aleatoreaCont)
     let notificacion = new SmsNotificacion({
-      body: `Hola ${aficionado.nombre} has creado una cuenta con este numero de Telefono, su contraseña es: ${aleatoreaCont}`,
+      body: `Hola ${aficionado.nombre} has creado una cuenta en DoMusic con este numero de Telefono, su contraseña es: ${aleatoreaCont}`,
       to: aficionado.celular
     });
+
+    console.log(notificacion)
 
     await new NotificacionService().SmsNotificacion(notificacion);
     user.contrasena = '';
