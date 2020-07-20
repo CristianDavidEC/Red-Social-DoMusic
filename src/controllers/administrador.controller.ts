@@ -20,10 +20,13 @@ import {
 
   requestBody
 } from '@loopback/rest';
+import {generate} from 'generate-password';
+import {LlaveContrasenas} from '../keys/llave-contraseña';
 import {ServiceKeys as keys} from '../keys/service-keys';
-import {Administrador} from '../models';
+import {Administrador, SmsNotificacion} from '../models';
 import {AdministradorRepository, UsuarioRepository} from '../repositories';
 import {EncryptDecrypt} from '../servies/encrypt-decrypt.service';
+import {NotificacionService} from '../servies/notificacion.service';
 
 export class AdministradorController {
   constructor(
@@ -57,7 +60,15 @@ export class AdministradorController {
   ): Promise<Administrador> {
 
     let adm = await this.administradorRepository.create(administrador);
-    let contrasena1 = new EncryptDecrypt(keys.MD5).Encrypt(adm.correo);
+
+    let aleatoreaCont = generate({
+      length: LlaveContrasenas.LONGITUD,
+      numbers: LlaveContrasenas.NUMBERS,
+      lowercase: LlaveContrasenas.LOWERCASE,
+      uppercase: LlaveContrasenas.UPPERCASE
+    })
+
+    let contrasena1 = new EncryptDecrypt(keys.MD5).Encrypt(aleatoreaCont);
     let contrasena2 = new EncryptDecrypt(keys.MD5).Encrypt(contrasena1);
 
     let u = {
@@ -68,6 +79,13 @@ export class AdministradorController {
     };
 
     let user = await this.usuarioRepository.create(u);
+
+    let notificacion = new SmsNotificacion({
+      body: `Hola ${administrador.correo} Esta es tu cuenta de adminitrador tipo ${administrador.tipo}, su contraseña es: ${aleatoreaCont}`,
+      to: administrador.celular
+    });
+
+    await new NotificacionService().SmsNotificacion(notificacion);
     user.contrasena = '';
     /**console.log(user)*/
     adm.usuario = user;

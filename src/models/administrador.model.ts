@@ -1,4 +1,4 @@
-import {Entity, model, property, hasOne} from '@loopback/repository';
+import {Entity, hasOne, model, property} from '@loopback/repository';
 import {Usuario} from './usuario.model';
 
 @model()
@@ -15,6 +15,12 @@ export class Administrador extends Entity {
     required: true,
   })
   tipo: string;
+
+  @property({
+    type: 'string',
+    required: true,
+  })
+  celular: string;
 
   @property({
     type: 'string',

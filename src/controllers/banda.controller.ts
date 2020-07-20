@@ -20,10 +20,13 @@ import {
 
   requestBody
 } from '@loopback/rest';
+import {generate} from 'generate-password';
+import {LlaveContrasenas} from '../keys/llave-contraseña';
 import {ServiceKeys as keys} from '../keys/service-keys';
-import {Banda} from '../models';
+import {Banda, SmsNotificacion} from '../models';
 import {BandaRepository, UsuarioRepository} from '../repositories';
 import {EncryptDecrypt} from '../servies/encrypt-decrypt.service';
+import {NotificacionService} from '../servies/notificacion.service';
 
 export class BandaController {
   constructor(
@@ -56,8 +59,17 @@ export class BandaController {
     banda: Omit<Banda, 'id'>,
   ): Promise<Banda> {
 
+    console.log(banda)
     let ban = await this.bandaRepository.create(banda);
-    let contrasena1 = new EncryptDecrypt(keys.MD5).Encrypt(ban.correo);
+
+    let aleatoreaCont = generate({
+      length: LlaveContrasenas.LONGITUD,
+      numbers: LlaveContrasenas.NUMBERS,
+      lowercase: LlaveContrasenas.LOWERCASE,
+      uppercase: LlaveContrasenas.UPPERCASE
+    })
+
+    let contrasena1 = new EncryptDecrypt(keys.MD5).Encrypt(aleatoreaCont);
     let contrasena2 = new EncryptDecrypt(keys.MD5).Encrypt(contrasena1);
 
     let u = {
@@ -67,7 +79,15 @@ export class BandaController {
       bandaId: ban.idBanda
     };
 
+    console.log(u)
+
     let user = await this.usuarioRepository.create(u);
+    let notificacion = new SmsNotificacion({
+      body: `Hola ${banda.nombre} has creado una cuenta en DoMusic Como Musico, con este numero de Telefono, su contraseña es: ${aleatoreaCont}`,
+      to: banda.celular
+    });
+
+    await new NotificacionService().SmsNotificacion(notificacion);
     user.contrasena = '';
     /**console.log(user)*/
     ban.usuario = user;
