@@ -1,20 +1,18 @@
-import {DefaultCrudRepository, repository, HasOneRepositoryFactory, HasManyRepositoryFactory} from '@loopback/repository';
-import {Banda, BandaRelations, Usuario, MusicoProfesional, Publicacion} from '../models';
+import {Getter, inject} from '@loopback/core';
+import {DefaultCrudRepository, HasManyRepositoryFactory, HasOneRepositoryFactory, repository} from '@loopback/repository';
 import {MongadbDataSource} from '../datasources';
-import {inject, Getter} from '@loopback/core';
-import {UsuarioRepository} from './usuario.repository';
+import {Banda, BandaRelations, Publicacion, Usuario} from '../models';
 import {MusicoProfesionalRepository} from './musico-profesional.repository';
 import {PublicacionRepository} from './publicacion.repository';
+import {UsuarioRepository} from './usuario.repository';
 
 export class BandaRepository extends DefaultCrudRepository<
   Banda,
   typeof Banda.prototype.idBanda,
   BandaRelations
-> {
+  > {
 
   public readonly usuario: HasOneRepositoryFactory<Usuario, typeof Banda.prototype.idBanda>;
-
-  public readonly musicoProfesionals: HasManyRepositoryFactory<MusicoProfesional, typeof Banda.prototype.idBanda>;
 
   public readonly publicacion: HasOneRepositoryFactory<Publicacion, typeof Banda.prototype.idBanda>;
 
@@ -28,8 +26,6 @@ export class BandaRepository extends DefaultCrudRepository<
     this.registerInclusionResolver('publicacions', this.publicacions.inclusionResolver);
     this.publicacion = this.createHasOneRepositoryFactoryFor('publicacion', publicacionRepositoryGetter);
     this.registerInclusionResolver('publicacion', this.publicacion.inclusionResolver);
-    this.musicoProfesionals = this.createHasManyRepositoryFactoryFor('musicoProfesionals', musicoProfesionalRepositoryGetter,);
-    this.registerInclusionResolver('musicoProfesionals', this.musicoProfesionals.inclusionResolver);
     this.usuario = this.createHasOneRepositoryFactoryFor('usuario', usuarioRepositoryGetter);
     this.registerInclusionResolver('usuario', this.usuario.inclusionResolver);
   }

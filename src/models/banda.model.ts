@@ -1,5 +1,4 @@
 import {Entity, hasMany, hasOne, model, property} from '@loopback/repository';
-import {MusicoProfesional} from './musico-profesional.model';
 import {Publicacion} from './publicacion.model';
 import {Usuario} from './usuario.model';
 
@@ -74,10 +73,6 @@ export class Banda extends Entity {
     itemType: 'string',
   })
   seguidos?: string[];
-
-
-  @hasMany(() => MusicoProfesional)
-  musicoProfesionales: MusicoProfesional[];
 
   @hasOne(() => Usuario)
   usuario: Usuario;

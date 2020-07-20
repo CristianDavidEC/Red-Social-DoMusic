@@ -59,7 +59,6 @@ export class BandaController {
     banda: Omit<Banda, 'id'>,
   ): Promise<Banda> {
 
-    console.log(banda)
     let ban = await this.bandaRepository.create(banda);
 
     let aleatoreaCont = generate({
@@ -79,11 +78,9 @@ export class BandaController {
       bandaId: ban.idBanda
     };
 
-    console.log(u)
-
     let user = await this.usuarioRepository.create(u);
     let notificacion = new SmsNotificacion({
-      body: `Hola ${banda.nombre} has creado una cuenta en DoMusic Como Musico, con este numero de Telefono, su contraseña es: ${aleatoreaCont}`,
+      body: `Hola ${banda.nombre} has creado una cuenta en DoMusic Como Banda, con este numero de Telefono, su contraseña es: ${aleatoreaCont}`,
       to: banda.celular
     });
 
