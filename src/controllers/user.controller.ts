@@ -4,7 +4,7 @@ import {repository} from '@loopback/repository';
 import {HttpErrors, post, requestBody} from '@loopback/rest';
 import {NotificacionEmail, SmsNotificacion} from '../models';
 /**import {Credentials} from 'crypto';**/
-import {AficionadoRepository, UsuarioRepository} from '../repositories';
+import {AdministradorRepository, AficionadoRepository, BandaRepository, MusicoProfesionalRepository, UsuarioRepository} from '../repositories';
 import {AuthService} from '../servies/auth.service';
 import {NotificacionService} from '../servies/notificacion.service';
 
@@ -24,11 +24,19 @@ export class UserController {
   authService: AuthService;
   constructor(
     @repository(UsuarioRepository)
-
     public usuarioRepository: UsuarioRepository,
 
     @repository(AficionadoRepository)
-    public aficionadoRepository: AficionadoRepository
+    public aficionadoRepository: AficionadoRepository,
+
+    @repository(MusicoProfesionalRepository)
+    public musicoProfesionalRepository: MusicoProfesionalRepository,
+
+    @repository(BandaRepository)
+    public bandaRepository: BandaRepository,
+
+    @repository(AdministradorRepository)
+    public administradorRepository: AdministradorRepository,
 
   ) {
     this.authService = new AuthService(this.usuarioRepository);
@@ -68,18 +76,43 @@ export class UserController {
   async rescuperar(
     @requestBody() recuperaDatosContrasena: RecuperaDatosContrasena
   ): Promise<boolean> {
+
     let contrasenaAleatoria = await this.authService.ReseteoContrasena(recuperaDatosContrasena.nombreUsuario)
+    let user = await this.usuarioRepository.findOne({where: {nombreUsuario: recuperaDatosContrasena.nombreUsuario}});
+
     if (contrasenaAleatoria) {
       //Envia el sms o correo de la nueva contraseña
       // 1. sms
       // 2. E-mail
-      let aficionado = await this.aficionadoRepository.findOne({where: {correo: recuperaDatosContrasena.nombreUsuario}})
+      //let aficionado = await this.aficionadoRepository.findOne({where: {correo: recuperaDatosContrasena.nombreUsuario}})
+      //console.log(aficionado)
+      var perfilUsuario = null;
+
+      switch (user?.rol) {
+        case "Aficionado":
+          perfilUsuario = await this.aficionadoRepository.findOne({where: {correo: recuperaDatosContrasena.nombreUsuario}})
+          break;
+        case "Musico Profesional":
+          perfilUsuario = await this.musicoProfesionalRepository.findOne({where: {correo: recuperaDatosContrasena.nombreUsuario}})
+          break;
+        case "Banda":
+          perfilUsuario = await this.bandaRepository.findOne({where: {correo: recuperaDatosContrasena.nombreUsuario}})
+          break;
+        case "Administrador":
+          perfilUsuario = await this.administradorRepository.findOne({where: {correo: recuperaDatosContrasena.nombreUsuario}})
+          break;
+        default:
+          console.log("ninguna Coincidencia")
+          break;
+      }
+
       switch (recuperaDatosContrasena.tipo) {
         case 1:
-          if (aficionado) {
+          console.log(perfilUsuario)
+          if (perfilUsuario) {
             let notificacion = new SmsNotificacion({
-              body: `su nueva contraseña es: ${contrasenaAleatoria}`,
-              to: aficionado.celular
+              body: `Hola ${perfilUsuario.nombre} Tu nueva contraseña es: ${contrasenaAleatoria}`,
+              to: perfilUsuario.celular
             });
 
             let sms = await new NotificacionService().SmsNotificacion(notificacion);
@@ -87,7 +120,7 @@ export class UserController {
               console.log("el mensaje fue enviado");
               return true;
             }
-            throw new HttpErrors["400"](`el número telefónico no fue encontrado ${aficionado.celular}`);
+            throw new HttpErrors["400"](`el número telefónico no fue encontrado ${perfilUsuario.celular}`);
 
           }
           throw new HttpErrors[400]("el usuario no fue encontrado");
@@ -95,11 +128,11 @@ export class UserController {
         case 2:
           //Envio de Email
 
-          if (aficionado) {
+          if (perfilUsuario) {
             let notificacion = new NotificacionEmail({
               textBody: `su nueva contraseña es: ${contrasenaAleatoria}`,
               htmlBody: `su nueva contraseña es: ${contrasenaAleatoria}`,
-              to: aficionado.correo,
+              to: perfilUsuario.correo,
               subject: 'Nueva Contraseña'
 
             });
