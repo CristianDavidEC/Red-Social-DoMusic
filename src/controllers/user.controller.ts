@@ -77,6 +77,7 @@ export class UserController {
     @requestBody() recuperaDatosContrasena: RecuperaDatosContrasena
   ): Promise<boolean> {
 
+    //Retorna la contraseña asignada
     let contrasenaAleatoria = await this.authService.ReseteoContrasena(recuperaDatosContrasena.nombreUsuario)
     let user = await this.usuarioRepository.findOne({where: {nombreUsuario: recuperaDatosContrasena.nombreUsuario}});
 
@@ -85,9 +86,9 @@ export class UserController {
       // 1. sms
       // 2. E-mail
       //let aficionado = await this.aficionadoRepository.findOne({where: {correo: recuperaDatosContrasena.nombreUsuario}})
-      //console.log(aficionado)
       var perfilUsuario = null;
 
+      //Determina que tipo de usuario es para su respectiva recuperacion
       switch (user?.rol) {
         case "Aficionado":
           perfilUsuario = await this.aficionadoRepository.findOne({where: {correo: recuperaDatosContrasena.nombreUsuario}})
@@ -108,13 +109,13 @@ export class UserController {
 
       switch (recuperaDatosContrasena.tipo) {
         case 1:
-          console.log(perfilUsuario)
           if (perfilUsuario) {
+            //Genera la Notificaicon
             let notificacion = new SmsNotificacion({
               body: `Hola ${perfilUsuario.nombre} Tu nueva contraseña es: ${contrasenaAleatoria}`,
               to: perfilUsuario.celular
             });
-
+            //Envia el mensaje
             let sms = await new NotificacionService().SmsNotificacion(notificacion);
             if (sms) {
               console.log("el mensaje fue enviado");
@@ -129,6 +130,7 @@ export class UserController {
           //Envio de Email
 
           if (perfilUsuario) {
+            //Genera la notificaicon de email
             let notificacion = new NotificacionEmail({
               textBody: `su nueva contraseña es: ${contrasenaAleatoria}`,
               htmlBody: `su nueva contraseña es: ${contrasenaAleatoria}`,
@@ -136,6 +138,7 @@ export class UserController {
               subject: 'Nueva Contraseña'
 
             });
+            //Envia la notificacion
             let email = await new NotificacionService().NotificacionEmail(notificacion);
             if (email) {
               console.log("el mensaje fue enviado");
