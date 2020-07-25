@@ -49,4 +49,5 @@ export * from './usuario-mensaje.controller';
 export * from './usuario-musico-profesional.controller';
 export * from './usuario-notificacion.controller';
 export * from './usuario.controller';
-
+export * from './comentario-usuario.controller';
+export * from './usuario-comentario.controller';

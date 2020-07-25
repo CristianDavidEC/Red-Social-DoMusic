@@ -1,5 +1,5 @@
 import {DefaultCrudRepository, repository, BelongsToAccessor, HasManyRepositoryFactory} from '@loopback/repository';
-import {Usuario, UsuarioRelations, Administrador, Aficionado, Banda, MusicoProfesional, DenunciaXusario, DenunciaXPubli, Mensaje, Notificacion} from '../models';
+import {Usuario, UsuarioRelations, Administrador, Aficionado, Banda, MusicoProfesional, DenunciaXusario, DenunciaXPubli, Mensaje, Notificacion, Comentario} from '../models';
 import {MongadbDataSource} from '../datasources';
 import {inject, Getter} from '@loopback/core';
 import {AdministradorRepository} from './administrador.repository';
@@ -10,6 +10,7 @@ import {DenunciaXusarioRepository} from './denuncia-xusario.repository';
 import {DenunciaXPubliRepository} from './denuncia-x-publi.repository';
 import {MensajeRepository} from './mensaje.repository';
 import {NotificacionRepository} from './notificacion.repository';
+import {ComentarioRepository} from './comentario.repository';
 
 export class UsuarioRepository extends DefaultCrudRepository<
   Usuario,
@@ -33,10 +34,14 @@ export class UsuarioRepository extends DefaultCrudRepository<
 
   public readonly notificacion: BelongsToAccessor<Notificacion, typeof Usuario.prototype.idUsuario>;
 
+  public readonly comentario: BelongsToAccessor<Comentario, typeof Usuario.prototype.idUsuario>;
+
   constructor(
-    @inject('datasources.mongadb') dataSource: MongadbDataSource, @repository.getter('AdministradorRepository') protected administradorRepositoryGetter: Getter<AdministradorRepository>, @repository.getter('AficionadoRepository') protected aficionadoRepositoryGetter: Getter<AficionadoRepository>, @repository.getter('BandaRepository') protected bandaRepositoryGetter: Getter<BandaRepository>, @repository.getter('MusicoProfesionalRepository') protected musicoProfesionalRepositoryGetter: Getter<MusicoProfesionalRepository>, @repository.getter('DenunciaXusarioRepository') protected denunciaXusarioRepositoryGetter: Getter<DenunciaXusarioRepository>, @repository.getter('DenunciaXPubliRepository') protected denunciaXPubliRepositoryGetter: Getter<DenunciaXPubliRepository>, @repository.getter('MensajeRepository') protected mensajeRepositoryGetter: Getter<MensajeRepository>, @repository.getter('NotificacionRepository') protected notificacionRepositoryGetter: Getter<NotificacionRepository>,
+    @inject('datasources.mongadb') dataSource: MongadbDataSource, @repository.getter('AdministradorRepository') protected administradorRepositoryGetter: Getter<AdministradorRepository>, @repository.getter('AficionadoRepository') protected aficionadoRepositoryGetter: Getter<AficionadoRepository>, @repository.getter('BandaRepository') protected bandaRepositoryGetter: Getter<BandaRepository>, @repository.getter('MusicoProfesionalRepository') protected musicoProfesionalRepositoryGetter: Getter<MusicoProfesionalRepository>, @repository.getter('DenunciaXusarioRepository') protected denunciaXusarioRepositoryGetter: Getter<DenunciaXusarioRepository>, @repository.getter('DenunciaXPubliRepository') protected denunciaXPubliRepositoryGetter: Getter<DenunciaXPubliRepository>, @repository.getter('MensajeRepository') protected mensajeRepositoryGetter: Getter<MensajeRepository>, @repository.getter('NotificacionRepository') protected notificacionRepositoryGetter: Getter<NotificacionRepository>, @repository.getter('ComentarioRepository') protected comentarioRepositoryGetter: Getter<ComentarioRepository>,
   ) {
     super(Usuario, dataSource);
+    this.comentario = this.createBelongsToAccessorFor('comentario', comentarioRepositoryGetter,);
+    this.registerInclusionResolver('comentario', this.comentario.inclusionResolver);
     this.notificacion = this.createBelongsToAccessorFor('notificacion', notificacionRepositoryGetter,);
     this.registerInclusionResolver('notificacion', this.notificacion.inclusionResolver);
     this.mensaje = this.createBelongsToAccessorFor('mensaje', mensajeRepositoryGetter,);

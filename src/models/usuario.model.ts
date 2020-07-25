@@ -7,6 +7,7 @@ import {DenunciaXusario} from './denuncia-xusario.model';
 import {DenunciaXPubli} from './denuncia-x-publi.model';
 import {Mensaje} from './mensaje.model';
 import {Notificacion} from './notificacion.model';
+import {Comentario} from './comentario.model';
 
 @model()
 export class Usuario extends Entity {
@@ -59,6 +60,9 @@ export class Usuario extends Entity {
 
   @belongsTo(() => Notificacion)
   notificacionId: string;
+
+  @belongsTo(() => Comentario)
+  comentarioId: string;
 
   constructor(data?: Partial<Usuario>) {
     super(data);
