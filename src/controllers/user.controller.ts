@@ -80,6 +80,8 @@ export class UserController {
     //Retorna la contraseña asignada
     let contrasenaAleatoria = await this.authService.ReseteoContrasena(recuperaDatosContrasena.nombreUsuario)
     let user = await this.usuarioRepository.findOne({where: {nombreUsuario: recuperaDatosContrasena.nombreUsuario}});
+    //console.log(user, "User controller")
+    //console.log(contrasenaAleatoria, "Contraseña generada")
 
     if (contrasenaAleatoria) {
       //Envia el sms o correo de la nueva contraseña
@@ -103,13 +105,14 @@ export class UserController {
           perfilUsuario = await this.administradorRepository.findOne({where: {correo: recuperaDatosContrasena.nombreUsuario}})
           break;
         default:
-          console.log("ninguna Coincidencia")
+          console.log("Ninguna Coincidencia")
           break;
       }
 
       switch (recuperaDatosContrasena.tipo) {
         case 1:
           if (perfilUsuario) {
+            //console.log(perfilUsuario)
             //Genera la Notificaicon
             let notificacion = new SmsNotificacion({
               body: `Hola ${perfilUsuario.nombre} Tu nueva contraseña es: ${contrasenaAleatoria}`,
@@ -128,7 +131,7 @@ export class UserController {
           break;
         case 2:
           //Envio de Email
-
+          //console.log(perfilUsuario)
           if (perfilUsuario) {
             //Genera la notificaicon de email
             let notificacion = new NotificacionEmail({

@@ -50,6 +50,7 @@ export class AuthService {
   async ReseteoContrasena(nombreUsuario: string): Promise<String | false> {
     //Busca un un usuario con su username
     let usuario = await this.usuarioRepository.findOne({where: {nombreUsuario: nombreUsuario}});
+    //console.log(usuario, "Reseteo conraseña auto services")
     //Genera una nueva clave
     if (usuario) {
       let contrasenaAleatoria = generator({
