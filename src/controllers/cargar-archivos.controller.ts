@@ -1,7 +1,7 @@
 import {inject} from '@loopback/core';
 import {
   HttpErrors,
-
+  post,
   Request,
   requestBody,
   Response,
@@ -15,6 +15,26 @@ import {UploadFilesKeys} from '../keys/carga-archivos-llaves';
 export class CargarArchivosController {
   constructor() {}
 
+
+  /**
+   *
+   * @param response
+   * @param request
+   */
+  @post('/publicidadImage', {
+    responses: {
+      200: {
+        content: {
+          'application/json': {
+            schema: {
+              type: 'object',
+            },
+          },
+        },
+        description: 'Advertising Image',
+      },
+    },
+  })
   async advertisingImageUpload(
     @inject(RestBindings.Http.RESPONSE) response: Response,
     @requestBody.file() request: Request,
