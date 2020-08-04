@@ -1,4 +1,5 @@
 import {inject} from '@loopback/core';
+// import {repository} from '@loopback/repository';
 import {
   HttpErrors,
   post,
@@ -10,6 +11,12 @@ import {
 import multer from 'multer';
 import path from 'path';
 import {UploadFilesKeys} from '../keys/carga-archivos-llaves';
+// import {MusicoProfesional} from '../models';
+// import {MusicoProfesionalRepository} from '../repositories';
+// import {Aficionado} from '../models';
+// import {AficionadoRepository} from '../repositories';
+// import {Banda} from '../models';
+// import {BandaRepository} from '../repositories';
 
 
 export class CargarArchivosController {
@@ -39,8 +46,8 @@ export class CargarArchivosController {
     @inject(RestBindings.Http.RESPONSE) response: Response,
     @requestBody.file() request: Request,
   ): Promise<object | false> {
-    const advertisingImagePath = path.join(__dirname, UploadFilesKeys.ADVERTISING_IMAGE_PATH);
-    let res = await this.StoreFileToPath(advertisingImagePath, UploadFilesKeys.ADVERTISING_IMAGE_FIELDNAME, request, response, UploadFilesKeys.IMAGE_ACCEPTED_EXT);
+    const publicidadImagePath = path.join(__dirname, UploadFilesKeys.ADVERTISING_IMAGE_PATH);
+    let res = await this.StoreFileToPath(publicidadImagePath, UploadFilesKeys.ADVERTISING_IMAGE_FIELDNAME, request, response, UploadFilesKeys.IMAGE_ACCEPTED_EXT);
     if (res) {
       const filename = response.req?.file.filename;
       if (filename) {
