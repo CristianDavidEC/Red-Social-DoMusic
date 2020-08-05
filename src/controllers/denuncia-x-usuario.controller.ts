@@ -1,3 +1,4 @@
+import {authenticate} from '@loopback/authentication';
 import {
   Count,
   CountSchema,
@@ -29,6 +30,7 @@ export class DenunciaXUsuarioController {
     public denunciaXusarioRepository: DenunciaXusarioRepository,
   ) {}
 
+  @authenticate('TokenMusProfesionalStrategy' && 'TokenBandaStrategy' && 'TokenAficionadoStrategy')
   @post('/denuncia-xusarios', {
     responses: {
       '200': {
@@ -53,6 +55,7 @@ export class DenunciaXUsuarioController {
     return this.denunciaXusarioRepository.create(denunciaXusario);
   }
 
+  @authenticate('TokenAdminStrategy')
   @get('/denuncia-xusarios/count', {
     responses: {
       '200': {
@@ -66,6 +69,8 @@ export class DenunciaXUsuarioController {
   ): Promise<Count> {
     return this.denunciaXusarioRepository.count(where);
   }
+
+  @authenticate('TokenAdminStrategy')
 
   @get('/denuncia-xusarios', {
     responses: {
@@ -88,7 +93,7 @@ export class DenunciaXUsuarioController {
     return this.denunciaXusarioRepository.find(filter);
   }
 
-  @patch('/denuncia-xusarios', {
+  /* @patch('/denuncia-xusarios', {
     responses: {
       '200': {
         description: 'DenunciaXusario PATCH success count',
@@ -108,8 +113,9 @@ export class DenunciaXUsuarioController {
     @param.where(DenunciaXusario) where?: Where<DenunciaXusario>,
   ): Promise<Count> {
     return this.denunciaXusarioRepository.updateAll(denunciaXusario, where);
-  }
+  } */
 
+  @authenticate('TokenAdminStrategy')
   @get('/denuncia-xusarios/{id}', {
     responses: {
       '200': {
@@ -129,7 +135,7 @@ export class DenunciaXUsuarioController {
     return this.denunciaXusarioRepository.findById(id, filter);
   }
 
-  @patch('/denuncia-xusarios/{id}', {
+  /* @patch('/denuncia-xusarios/{id}', {
     responses: {
       '204': {
         description: 'DenunciaXusario PATCH success',
@@ -148,9 +154,9 @@ export class DenunciaXUsuarioController {
     denunciaXusario: DenunciaXusario,
   ): Promise<void> {
     await this.denunciaXusarioRepository.updateById(id, denunciaXusario);
-  }
+  } */
 
-  @put('/denuncia-xusarios/{id}', {
+  /* @put('/denuncia-xusarios/{id}', {
     responses: {
       '204': {
         description: 'DenunciaXusario PUT success',
@@ -162,8 +168,9 @@ export class DenunciaXUsuarioController {
     @requestBody() denunciaXusario: DenunciaXusario,
   ): Promise<void> {
     await this.denunciaXusarioRepository.replaceById(id, denunciaXusario);
-  }
+  } */
 
+  @authenticate('BasicStrategy')
   @del('/denuncia-xusarios/{id}', {
     responses: {
       '204': {

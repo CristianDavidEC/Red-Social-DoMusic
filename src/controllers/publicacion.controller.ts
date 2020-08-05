@@ -30,7 +30,8 @@ export class PublicacionController {
     public publicacionRepository: PublicacionRepository,
   ) {}
 
-  @authenticate('TokenMusProfesionalStrategy' && 'TokenBandaStrategy' && 'TokenAdminStratery')
+
+  @authenticate('TokenMusProfesionalStrategy' && 'TokenBandaStrategy')
   @post('/publicaciones', {
     responses: {
       '200': {
@@ -154,6 +155,8 @@ export class PublicacionController {
     await this.publicacionRepository.updateById(id, publicacion);
   }
 
+  @authenticate('TokenMusProfesionalStrategy' && 'TokenBandaStrategy')
+
   @put('/publicaciones/{id}', {
     responses: {
       '204': {
@@ -167,6 +170,8 @@ export class PublicacionController {
   ): Promise<void> {
     await this.publicacionRepository.replaceById(id, publicacion);
   }
+
+  @authenticate('TokenMusProfesionalStrategy' && 'TokenBandaStrategy' && 'TokenAdminStrategy')
 
   @del('/publicaciones/{id}', {
     responses: {

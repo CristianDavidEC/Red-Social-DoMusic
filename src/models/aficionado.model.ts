@@ -63,9 +63,9 @@ export class Aficionado extends Entity {
 
   @property({
     type: 'string',
-    required: true,
+    required: false,
   })
-  fotoPerfil: string;
+  fotoPerfil?: string;
 
   @property({
     type: 'array',

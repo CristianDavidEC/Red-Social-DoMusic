@@ -1,3 +1,4 @@
+import {authenticate} from '@loopback/authentication';
 import {
   Count,
   CountSchema,
@@ -25,6 +26,7 @@ export class MensajeController {
     public mensajeRepository : MensajeRepository,
   ) {}
 
+  @authenticate('TokenMusProfesionalStrategy' && 'TokenBandaStrategy' && 'TokenAficionadoStrategy')
   @post('/mensajes', {
     responses: {
       '200': {
@@ -49,6 +51,7 @@ export class MensajeController {
     return this.mensajeRepository.create(mensaje);
   }
 
+  @authenticate('TokenMusProfesionalStrategy' && 'TokenBandaStrategy' && 'TokenAficionadoStrategy' && 'TokenAdminStrategy')
   @get('/mensajes/count', {
     responses: {
       '200': {
@@ -63,6 +66,7 @@ export class MensajeController {
     return this.mensajeRepository.count(where);
   }
 
+  @authenticate('TokenMusProfesionalStrategy' && 'TokenBandaStrategy' && 'TokenAficionadoStrategy' && 'TokenAdminStrategy')
   @get('/mensajes', {
     responses: {
       '200': {
@@ -84,7 +88,7 @@ export class MensajeController {
     return this.mensajeRepository.find(filter);
   }
 
-  @patch('/mensajes', {
+  /* @patch('/mensajes', {
     responses: {
       '200': {
         description: 'Mensaje PATCH success count',
@@ -104,8 +108,9 @@ export class MensajeController {
     @param.where(Mensaje) where?: Where<Mensaje>,
   ): Promise<Count> {
     return this.mensajeRepository.updateAll(mensaje, where);
-  }
+  } */
 
+  @authenticate('TokenMusProfesionalStrategy' && 'TokenBandaStrategy' && 'TokenAficionadoStrategy' && 'TokenAdminStrategy')
   @get('/mensajes/{id}', {
     responses: {
       '200': {
@@ -125,7 +130,7 @@ export class MensajeController {
     return this.mensajeRepository.findById(id, filter);
   }
 
-  @patch('/mensajes/{id}', {
+  /* @patch('/mensajes/{id}', {
     responses: {
       '204': {
         description: 'Mensaje PATCH success',
@@ -144,9 +149,9 @@ export class MensajeController {
     mensaje: Mensaje,
   ): Promise<void> {
     await this.mensajeRepository.updateById(id, mensaje);
-  }
+  } */
 
-  @put('/mensajes/{id}', {
+  /* @put('/mensajes/{id}', {
     responses: {
       '204': {
         description: 'Mensaje PUT success',
@@ -158,8 +163,9 @@ export class MensajeController {
     @requestBody() mensaje: Mensaje,
   ): Promise<void> {
     await this.mensajeRepository.replaceById(id, mensaje);
-  }
+  } */
 
+  @authenticate('TokenMusProfesionalStrategy' && 'TokenBandaStrategy' && 'TokenAficionadoStrategy')
   @del('/mensajes/{id}', {
     responses: {
       '204': {

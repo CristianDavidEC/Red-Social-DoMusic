@@ -1,3 +1,4 @@
+import {authenticate} from '@loopback/authentication';
 import {
   Count,
   CountSchema,
@@ -25,6 +26,7 @@ export class NotificacionController {
     public notificacionRepository : NotificacionRepository,
   ) {}
 
+  @authenticate('BasicStrategy')
   @post('/notificacions', {
     responses: {
       '200': {
@@ -49,6 +51,7 @@ export class NotificacionController {
     return this.notificacionRepository.create(notificacion);
   }
 
+  @authenticate('BasicStrategy')
   @get('/notificacions/count', {
     responses: {
       '200': {
@@ -63,6 +66,7 @@ export class NotificacionController {
     return this.notificacionRepository.count(where);
   }
 
+  @authenticate('BasicStrategy')
   @get('/notificacions', {
     responses: {
       '200': {
@@ -84,7 +88,7 @@ export class NotificacionController {
     return this.notificacionRepository.find(filter);
   }
 
-  @patch('/notificacions', {
+  /* @patch('/notificacions', {
     responses: {
       '200': {
         description: 'Notificacion PATCH success count',
@@ -105,7 +109,8 @@ export class NotificacionController {
   ): Promise<Count> {
     return this.notificacionRepository.updateAll(notificacion, where);
   }
-
+ */
+  @authenticate('BasicStrategy')
   @get('/notificacions/{id}', {
     responses: {
       '200': {
@@ -125,7 +130,7 @@ export class NotificacionController {
     return this.notificacionRepository.findById(id, filter);
   }
 
-  @patch('/notificacions/{id}', {
+  /* @patch('/notificacions/{id}', {
     responses: {
       '204': {
         description: 'Notificacion PATCH success',
@@ -144,9 +149,9 @@ export class NotificacionController {
     notificacion: Notificacion,
   ): Promise<void> {
     await this.notificacionRepository.updateById(id, notificacion);
-  }
+  } */
 
-  @put('/notificacions/{id}', {
+  /* @put('/notificacions/{id}', {
     responses: {
       '204': {
         description: 'Notificacion PUT success',
@@ -158,9 +163,9 @@ export class NotificacionController {
     @requestBody() notificacion: Notificacion,
   ): Promise<void> {
     await this.notificacionRepository.replaceById(id, notificacion);
-  }
+  } */
 
-  @del('/notificacions/{id}', {
+  /* @del('/notificacions/{id}', {
     responses: {
       '204': {
         description: 'Notificacion DELETE success',
@@ -169,5 +174,5 @@ export class NotificacionController {
   })
   async deleteById(@param.path.string('id') id: string): Promise<void> {
     await this.notificacionRepository.deleteById(id);
-  }
+  } */
 }

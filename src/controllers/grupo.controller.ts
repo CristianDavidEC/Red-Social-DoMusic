@@ -1,3 +1,4 @@
+import {authenticate} from '@loopback/authentication';
 import {
   Count,
   CountSchema,
@@ -25,6 +26,7 @@ export class GrupoController {
     public grupoRepository : GrupoRepository,
   ) {}
 
+  @authenticate('TokenMusProfesionalStrategy')
   @post('/grupos', {
     responses: {
       '200': {
@@ -49,6 +51,7 @@ export class GrupoController {
     return this.grupoRepository.create(grupo);
   }
 
+  @authenticate('TokenMusProfesionalStrategy' && 'TokenAficionadoStrategy' && 'TokenAdminStrategy')
   @get('/grupos/count', {
     responses: {
       '200': {
@@ -63,6 +66,7 @@ export class GrupoController {
     return this.grupoRepository.count(where);
   }
 
+  @authenticate('TokenMusProfesionalStrategy' && 'TokenAficionadoStrategy' && 'TokenAdminStrategy')
   @get('/grupos', {
     responses: {
       '200': {
@@ -84,6 +88,7 @@ export class GrupoController {
     return this.grupoRepository.find(filter);
   }
 
+  @authenticate('TokenMusProfesionalStrategy' )
   @patch('/grupos', {
     responses: {
       '200': {
@@ -106,6 +111,7 @@ export class GrupoController {
     return this.grupoRepository.updateAll(grupo, where);
   }
 
+  @authenticate('TokenMusProfesionalStrategy' && 'TokenAficionadoStrategy' && 'TokenAdminStrategy')
   @get('/grupos/{id}', {
     responses: {
       '200': {
@@ -125,6 +131,7 @@ export class GrupoController {
     return this.grupoRepository.findById(id, filter);
   }
 
+  @authenticate('TokenMusProfesionalStrategy' )
   @patch('/grupos/{id}', {
     responses: {
       '204': {
@@ -146,6 +153,7 @@ export class GrupoController {
     await this.grupoRepository.updateById(id, grupo);
   }
 
+  @authenticate('TokenMusProfesionalStrategy' )
   @put('/grupos/{id}', {
     responses: {
       '204': {
@@ -160,6 +168,7 @@ export class GrupoController {
     await this.grupoRepository.replaceById(id, grupo);
   }
 
+  @authenticate('TokenMusProfesionalStrategy' && 'TokenAdminStrategy')
   @del('/grupos/{id}', {
     responses: {
       '204': {

@@ -1,3 +1,4 @@
+import {authenticate} from '@loopback/authentication';
 import {
   Count,
   CountSchema,
@@ -25,6 +26,8 @@ export class DenunciaXPubliController {
     public denunciaXPubliRepository : DenunciaXPubliRepository,
   ) {}
 
+  @authenticate('TokenMusProfesionalStrategy' && 'TokenBandaStrategy' && 'TokenAficionadoStrategy')
+
   @post('/denuncia-x-publis', {
     responses: {
       '200': {
@@ -49,6 +52,7 @@ export class DenunciaXPubliController {
     return this.denunciaXPubliRepository.create(denunciaXPubli);
   }
 
+  @authenticate('TokenAdminStrategy')
   @get('/denuncia-x-publis/count', {
     responses: {
       '200': {
@@ -63,6 +67,7 @@ export class DenunciaXPubliController {
     return this.denunciaXPubliRepository.count(where);
   }
 
+  @authenticate('TokenAdminStrategy')
   @get('/denuncia-x-publis', {
     responses: {
       '200': {
@@ -84,7 +89,7 @@ export class DenunciaXPubliController {
     return this.denunciaXPubliRepository.find(filter);
   }
 
-  @patch('/denuncia-x-publis', {
+  /* @patch('/denuncia-x-publis', {
     responses: {
       '200': {
         description: 'DenunciaXPubli PATCH success count',
@@ -105,7 +110,9 @@ export class DenunciaXPubliController {
   ): Promise<Count> {
     return this.denunciaXPubliRepository.updateAll(denunciaXPubli, where);
   }
+ */
 
+  @authenticate('TokenAdminStrategy')
   @get('/denuncia-x-publis/{id}', {
     responses: {
       '200': {
@@ -125,7 +132,7 @@ export class DenunciaXPubliController {
     return this.denunciaXPubliRepository.findById(id, filter);
   }
 
-  @patch('/denuncia-x-publis/{id}', {
+  /* @patch('/denuncia-x-publis/{id}', {
     responses: {
       '204': {
         description: 'DenunciaXPubli PATCH success',
@@ -144,9 +151,9 @@ export class DenunciaXPubliController {
     denunciaXPubli: DenunciaXPubli,
   ): Promise<void> {
     await this.denunciaXPubliRepository.updateById(id, denunciaXPubli);
-  }
+  } */
 
-  @put('/denuncia-x-publis/{id}', {
+  /* @put('/denuncia-x-publis/{id}', {
     responses: {
       '204': {
         description: 'DenunciaXPubli PUT success',
@@ -158,8 +165,9 @@ export class DenunciaXPubliController {
     @requestBody() denunciaXPubli: DenunciaXPubli,
   ): Promise<void> {
     await this.denunciaXPubliRepository.replaceById(id, denunciaXPubli);
-  }
+  } */
 
+  @authenticate('BasicStrategy')
   @del('/denuncia-x-publis/{id}', {
     responses: {
       '204': {
