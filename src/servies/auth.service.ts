@@ -48,8 +48,10 @@ export class AuthService {
    * @param nombreUsuario
    */
   async ReseteoContrasena(nombreUsuario: string): Promise<String | false> {
+    //Busca un un usuario con su username
     let usuario = await this.usuarioRepository.findOne({where: {nombreUsuario: nombreUsuario}});
-
+    //console.log(usuario, "Reseteo conraseña auto services")
+    //Genera una nueva clave
     if (usuario) {
       let contrasenaAleatoria = generator({
         length: llaveCont.LONGITUD,
@@ -58,8 +60,10 @@ export class AuthService {
         uppercase: llaveCont.UPPERCASE
       });
 
+      //Encripta la contraseña
       let crypter = new EncryptDecrypt(keys.LOGIN_CRYPT_METHOD);
       let contrasena = crypter.Encrypt(crypter.Encrypt(contrasenaAleatoria))
+      //Asigna la nueva contraseña al usuario
       usuario.contrasena = contrasena;
       this.usuarioRepository.replaceById(usuario.idUsuario, usuario);
       return contrasenaAleatoria;

@@ -1,5 +1,6 @@
-import {belongsTo, Entity, hasMany, model, property} from '@loopback/repository';
+import {belongsTo, Entity, hasMany, model, property, hasOne} from '@loopback/repository';
 import {Publicacion} from './publicacion.model';
+import {Usuario} from './usuario.model';
 
 @model()
 export class Comentario extends Entity {
@@ -15,6 +16,18 @@ export class Comentario extends Entity {
     required: true,
   })
   contenido: string;
+
+  @property({
+    type: 'string',
+    required: true,
+  })
+  tipo: string;
+
+  @property({
+    type: 'array',
+    itemType: 'string',
+  })
+  listaComentarios: string[];
 
   @property({
     type: 'date',
@@ -35,6 +48,9 @@ export class Comentario extends Entity {
 
   @belongsTo(() => Publicacion)
   publicacionId: string;
+
+  @hasOne(() => Usuario)
+  usuario: Usuario;
 
   constructor(data?: Partial<Comentario>) {
     super(data);

@@ -62,29 +62,33 @@ export class AficionadoController {
   ): Promise<Aficionado> {
 
     let fan = await this.aficionadoRepository.create(aficionado);
+    //Genera contraseña aleatoria con el patron definido de generate
     let aleatoreaCont = generate({
       length: LlaveContrasenas.LONGITUD,
       numbers: LlaveContrasenas.NUMBERS,
       lowercase: LlaveContrasenas.LOWERCASE,
       uppercase: LlaveContrasenas.UPPERCASE
     })
+    //Encrypta la contraseña
     let contrasena1 = new EncryptDecrypt(keys.MD5).Encrypt(aleatoreaCont);
     let contrasena2 = new EncryptDecrypt(keys.MD5).Encrypt(contrasena1);
-
+    //Crea el json para la notivicacion
     let u = {
       nombreUsuario: fan.correo,
       contrasena: contrasena2,
       rol: 'Aficionado',
       aficionadoId: fan.idAficionado
     };
-
+    //Crea el Usuario
     let user = await this.usuarioRepository.create(u);
 
+    //Define la notificaion a enviar
     let notificacion = new SmsNotificacion({
       body: `Hola ${aficionado.nombre} has creado una cuenta en DoMusic como aficionado, con este numero de Telefono, su contraseña es: ${aleatoreaCont}`,
       to: aficionado.celular
     });
 
+    //Envia al notificacion
     await new NotificacionService().SmsNotificacion(notificacion);
     user.contrasena = '';
     fan.usuario = user;

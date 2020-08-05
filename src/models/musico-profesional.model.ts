@@ -50,7 +50,7 @@ export class MusicoProfesional extends Entity {
   correo: string;
 
   @property({
-    type: 'date',
+    type: 'string',
     required: true,
   })
   fechaNacimiento: string;
@@ -69,9 +69,9 @@ export class MusicoProfesional extends Entity {
 
   @property({
     type: 'string',
-    required: true,
+    required: false,
   })
-  fotoPerfil: string;
+  fotoPerfil?: string;
 
   @property({
     type: 'array',
