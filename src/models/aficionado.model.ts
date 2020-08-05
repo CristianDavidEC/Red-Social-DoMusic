@@ -1,6 +1,6 @@
-import {Entity, model, property, hasOne, belongsTo} from '@loopback/repository';
-import {Usuario} from './usuario.model';
+import {belongsTo, Entity, hasOne, model, property} from '@loopback/repository';
 import {GrupoXAficionado} from './grupo-x-aficionado.model';
+import {Usuario} from './usuario.model';
 
 @model()
 export class Aficionado extends Entity {
@@ -43,7 +43,7 @@ export class Aficionado extends Entity {
   ciudad: string;
 
   @property({
-    type: 'date',
+    type: 'string',
     required: true,
   })
   fechaNacimiento: string;
@@ -70,7 +70,6 @@ export class Aficionado extends Entity {
   @property({
     type: 'array',
     itemType: 'string',
-
   })
   seguidores?: string[];
 

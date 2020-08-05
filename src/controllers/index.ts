@@ -51,3 +51,5 @@ export * from './usuario-notificacion.controller';
 export * from './usuario.controller';
 export * from './comentario-usuario.controller';
 export * from './usuario-comentario.controller';
+export * from './cargar-archivos.controller';
+export * from './descarga-archivos.controller';

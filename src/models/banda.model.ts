@@ -51,7 +51,7 @@ export class Banda extends Entity {
   fotoPerfil?: string;
 
   @property({
-    type: 'date',
+    type: 'string',
     required: true,
   })
   fechaCreacion: string;
