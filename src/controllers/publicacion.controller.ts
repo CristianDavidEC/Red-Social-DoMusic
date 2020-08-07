@@ -32,7 +32,7 @@ export class PublicacionController {
 
 
 
-  @authenticate('TokenMusProfesionalStrategy' && 'TokenBandaStrategy')
+  @authenticate('TokenStrategy')
 
   @post('/publicaciones', {
     responses: {
@@ -157,7 +157,7 @@ export class PublicacionController {
     await this.publicacionRepository.updateById(id, publicacion);
   }
 
-  @authenticate('TokenMusProfesionalStrategy' && 'TokenBandaStrategy')
+  @authenticate('TokenStrategy')
 
   @put('/publicaciones/{id}', {
     responses: {
@@ -173,7 +173,7 @@ export class PublicacionController {
     await this.publicacionRepository.replaceById(id, publicacion);
   }
 
-  @authenticate('TokenMusProfesionalStrategy' && 'TokenBandaStrategy' && 'TokenAdminStrategy')
+  @authenticate('TokenStrategy')
 
   @del('/publicaciones/{id}', {
     responses: {
