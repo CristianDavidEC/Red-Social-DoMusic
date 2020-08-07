@@ -31,7 +31,9 @@ export class PublicacionController {
   ) {}
 
 
+
   @authenticate('TokenMusProfesionalStrategy' && 'TokenBandaStrategy')
+
   @post('/publicaciones', {
     responses: {
       '200': {
