@@ -21,7 +21,7 @@ export class Publicacion extends Entity {
   titulo: string;
 
   @property({
-    type: 'date',
+    type: 'string',
     required: true,
   })
   fecha: string;
