@@ -1,8 +1,14 @@
 import {inject} from '@loopback/core';
+import {repository} from '@loopback/repository';
 // import {repository} from '@loopback/repository';
 import {
   HttpErrors,
-  post,
+
+
+
+
+
+  param, post,
   Request,
   requestBody,
   Response,
@@ -11,8 +17,9 @@ import {
 import multer from 'multer';
 import path from 'path';
 import {UploadFilesKeys} from '../keys/carga-archivos-llaves';
-// import {MusicoProfesional} from '../models';
-// import {MusicoProfesionalRepository} from '../repositories';
+import {MusicoProfesional} from '../models';
+import {MusicoProfesionalRepository} from '../repositories';
+
 // import {Aficionado} from '../models';
 // import {AficionadoRepository} from '../repositories';
 // import {Banda} from '../models';
@@ -20,9 +27,12 @@ import {UploadFilesKeys} from '../keys/carga-archivos-llaves';
 
 
 export class CargarArchivosController {
-  constructor() {}
+  constructor(
+    @repository(MusicoProfesionalRepository)
+    private MusicoProfesionalRepository: MusicoProfesionalRepository
+  ) {
 
-
+  }
   /**
    *
    * @param response
@@ -56,6 +66,73 @@ export class CargarArchivosController {
     }
     return res;
   }
+
+
+  @post('/musicoFotoPerfil', {
+    responses: {
+      200: {
+        content: {
+          'application/json': {
+            schema: {
+              type: 'object',
+            },
+          },
+        },
+        description: 'MusicoProfesional Photo',
+      },
+    },
+  })
+  async musicoProfesionalPhotoUpload(
+    @inject(RestBindings.Http.RESPONSE) response: Response,
+    @param.query.string('musicoProfesionalId') musicoProfesionalId: string,
+    @requestBody.file() request: Request,
+  ): Promise<object | false> {
+    const musicoProfesionalPhotoPath = path.join(__dirname, UploadFilesKeys.MUSICO_PHOTO_PATH);
+    let res = await this.StoreFileToPath(musicoProfesionalPhotoPath, UploadFilesKeys.MUSICO_PHOTO_FIELDNAME, request, response, UploadFilesKeys.IMAGE_ACCEPTED_EXT);
+    if (res) {
+      const filename = response.req?.file.filename;
+      if (filename) {
+        let mp: MusicoProfesional = await this.MusicoProfesionalRepository.findById(musicoProfesionalId);
+        if (mp) {
+          mp.fotoPerfil = filename;
+          this.MusicoProfesionalRepository.replaceById(musicoProfesionalId, mp);
+          return {filename: filename};
+        }
+      }
+    }
+    return res;
+  }
+
+  @post('/archivoPublicacion', {
+    responses: {
+      200: {
+        content: {
+          'application/json': {
+            schema: {
+              type: 'object',
+            },
+          },
+        },
+        description: 'Archivo de la Publicacion',
+      },
+    },
+  })
+  async publicacionFileUpload(
+    @inject(RestBindings.Http.RESPONSE) response: Response,
+    @requestBody.file() request: Request,
+  ): Promise<object | false> {
+    const publicacionFilePath = path.join(__dirname, UploadFilesKeys.PUBLICATION_FILE_PATH);
+    let res = await this.StoreFileToPath(publicacionFilePath, UploadFilesKeys.PUBLICATION_FILE_FIELDNAME, request, response, UploadFilesKeys.IMAGE_ACCEPTED_EXT);
+    if (res) {
+      const filename = response.req?.file.filename;
+      if (filename) {
+        return {filename: filename};
+      }
+    }
+    return res;
+  }
+
+
 
   /**
    * Return a config for multer storage
