@@ -21,8 +21,6 @@ import {UploadFilesKeys} from '../keys/carga-archivos-llaves';
 
 export class CargarArchivosController {
   constructor() {}
-
-
   /**
    *
    * @param response
