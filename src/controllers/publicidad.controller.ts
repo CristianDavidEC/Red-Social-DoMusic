@@ -25,8 +25,8 @@ export class PublicidadController {
     @repository(PublicidadRepository)
     public publicidadRepository : PublicidadRepository,
   ) {}
-/* 
-  @authenticate('TokenAdminStrategy') */
+
+  @authenticate('TokenAdminStrategy')
   @post('/publicidad', {
     responses: {
       '200': {
@@ -86,7 +86,7 @@ export class PublicidadController {
     return this.publicidadRepository.find(filter);
   }
 
-  //@authenticate('TokenAdminStrategy')
+  @authenticate('TokenAdminStrategy')
   @patch('/publicidad', {
     responses: {
       '200': {
@@ -128,7 +128,7 @@ export class PublicidadController {
     return this.publicidadRepository.findById(id, filter);
   }
 
-  //@authenticate('TokenAdminStrategy')
+  @authenticate('TokenAdminStrategy')
   @patch('/publicidad/{id}', {
     responses: {
       '204': {
@@ -150,7 +150,7 @@ export class PublicidadController {
     await this.publicidadRepository.updateById(id, publicidad);
   }
 
-  //@authenticate('TokenAdminStrategy')
+  @authenticate('TokenAdminStrategy')
   @put('/publicidad/{id}', {
     responses: {
       '204': {
@@ -165,7 +165,7 @@ export class PublicidadController {
     await this.publicidadRepository.replaceById(id, publicidad);
   }
 
-  //@authenticate('TokenAdminStrategy')
+  @authenticate('TokenAdminStrategy')
   @del('/publicidad/{id}', {
     responses: {
       '204': {

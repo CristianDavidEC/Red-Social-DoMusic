@@ -21,30 +21,19 @@ export class Comentario extends Entity {
     type: 'string',
     required: true,
   })
-  tipo: string;
-
-  @property({
-    type: 'array',
-    itemType: 'string',
-  })
-  listaComentarios: string[];
-
-  @property({
-    type: 'date',
-    required: true,
-  })
   fecha: string;
-
-  @hasMany(() => Comentario)
-  comentarios: Comentario[];
 
   @property({
     type: 'string',
+    required: false,
   })
-  comentarioId?: string;
+  idPadre?: string;
 
-  @belongsTo(() => Comentario)
-  cComentarioId: string;
+  @property({
+    type: 'boolean',
+    required: false,
+  })
+  hijo?: boolean;
 
   @belongsTo(() => Publicacion)
   publicacionId: string;
