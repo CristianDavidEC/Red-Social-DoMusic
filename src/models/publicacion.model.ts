@@ -48,7 +48,6 @@ export class Publicacion extends Entity {
   })
   idUsuario: string;
 
-
   @belongsTo(() => Evento)
   eventoId: string;
 
