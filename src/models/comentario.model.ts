@@ -1,4 +1,4 @@
-import {belongsTo, Entity, hasMany, model, property, hasOne} from '@loopback/repository';
+import {belongsTo, Entity, hasOne, model, property} from '@loopback/repository';
 import {Publicacion} from './publicacion.model';
 import {Usuario} from './usuario.model';
 
@@ -34,6 +34,12 @@ export class Comentario extends Entity {
     required: true,
   })
   hijo: boolean;
+
+  @property({
+    type: 'string',
+    required: true,
+  })
+  usuarioId: string;
 
   @belongsTo(() => Publicacion)
   publicacionId: string;

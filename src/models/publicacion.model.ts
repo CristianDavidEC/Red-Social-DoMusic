@@ -42,6 +42,13 @@ export class Publicacion extends Entity {
   })
   archivo?: string;
 
+  @property({
+    type: 'string',
+    required: true,
+  })
+  idUsuario: string;
+
+
   @belongsTo(() => Evento)
   eventoId: string;
 
