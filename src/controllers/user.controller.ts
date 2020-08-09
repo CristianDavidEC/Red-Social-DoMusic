@@ -20,6 +20,12 @@ class RecuperaDatosContrasena {
   tipo: number;
 }
 
+class CambiarContrasena {
+  id: string;
+  contrasenaActual: string;
+  contrasenaNueva: string;
+}
+
 export class UserController {
   authService: AuthService;
   constructor(
@@ -77,11 +83,9 @@ export class UserController {
     @requestBody() recuperaDatosContrasena: RecuperaDatosContrasena
   ): Promise<boolean> {
 
-    //Retorna la contraseña asignada
     let contrasenaAleatoria = await this.authService.ReseteoContrasena(recuperaDatosContrasena.nombreUsuario)
+    console.log(contrasenaAleatoria)
     let user = await this.usuarioRepository.findOne({where: {nombreUsuario: recuperaDatosContrasena.nombreUsuario}});
-    //console.log(user, "User controller")
-    //console.log(contrasenaAleatoria, "Contraseña generada")
 
     if (contrasenaAleatoria) {
       //Envia el sms o correo de la nueva contraseña
@@ -160,6 +164,26 @@ export class UserController {
     }
     throw new HttpErrors[400]("El Usuario no fue encontrado");
 
+  }
+
+
+  @post('/cambiar-contrasena', {
+    responses: {
+      '200': {
+        description: 'login por usuario'
+      }
+    }
+  })
+
+  async cambiarContrasena(
+    @requestBody() cambiarDatosContrasena: CambiarContrasena
+  ): Promise<Boolean> {
+
+    let usuario = await this.authService.VerificarUsuarioCambioContrasena(cambiarDatosContrasena.id, cambiarDatosContrasena.contrasenaActual);
+    if (usuario) {
+      return await this.authService.CambioContrasena(cambiarDatosContrasena.id, cambiarDatosContrasena.contrasenaNueva);
+    }
+    throw new HttpErrors[400]("El Usuario no fue encontrado");
   }
 
 }

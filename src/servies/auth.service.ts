@@ -29,6 +29,35 @@ export class AuthService {
     }
     return false;
   }
+
+  async VerificarUsuarioCambioContrasena(id: string, contrasena: string): Promise<Usuario | false> {
+    let usuario = await this.usuarioRepository.findById(id);
+    if (usuario) {
+      let cryptPass = new EncryptDecrypt(ServiceKeys.LOGIN_CRYPT_METHOD).Encrypt(contrasena);
+      if (usuario.contrasena == cryptPass) {
+        return usuario;
+      }
+    }
+    return false;
+  }
+
+  /**
+   *
+   * @param id Usuario
+   * @param contrasena nueva contraseña
+   */
+  async CambioContrasena(id: string, contrasena: string): Promise<boolean> {
+    let usuario = await this.usuarioRepository.findById(id);
+    if (usuario) {
+      let cryptPass = new EncryptDecrypt(ServiceKeys.LOGIN_CRYPT_METHOD).Encrypt(contrasena);
+      usuario.contrasena = cryptPass;
+      await this.usuarioRepository.updateById(id, usuario);
+      return true;
+
+    }
+    return false;
+  }
+
   async GenerateToken(usuario: Usuario) {
     usuario.contrasena = '';
     let token = jwt.sign({

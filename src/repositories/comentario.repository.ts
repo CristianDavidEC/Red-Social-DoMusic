@@ -11,10 +11,6 @@ export class ComentarioRepository extends DefaultCrudRepository<
   ComentarioRelations
   > {
 
-  public readonly comentarios: HasManyRepositoryFactory<Comentario, typeof Comentario.prototype.idComentario>;
-
-  public readonly cComentario: BelongsToAccessor<Comentario, typeof Comentario.prototype.idComentario>;
-
   public readonly publicacion: BelongsToAccessor<Publicacion, typeof Comentario.prototype.idComentario>;
 
   public readonly usuario: HasOneRepositoryFactory<Usuario, typeof Comentario.prototype.idComentario>;
@@ -27,9 +23,5 @@ export class ComentarioRepository extends DefaultCrudRepository<
     this.registerInclusionResolver('usuario', this.usuario.inclusionResolver);
     this.publicacion = this.createBelongsToAccessorFor('publicacion', publicacionRepositoryGetter,);
     this.registerInclusionResolver('publicacion', this.publicacion.inclusionResolver);
-    this.cComentario = this.createBelongsToAccessorFor('cComentario', comentarioRepositoryGetter,);
-    this.registerInclusionResolver('cComentario', this.cComentario.inclusionResolver);
-    this.comentarios = this.createHasManyRepositoryFactoryFor('comentarios', comentarioRepositoryGetter,);
-    this.registerInclusionResolver('comentarios', this.comentarios.inclusionResolver);
   }
 }

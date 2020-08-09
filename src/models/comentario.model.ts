@@ -1,4 +1,4 @@
-import {belongsTo, Entity, hasMany, model, property, hasOne} from '@loopback/repository';
+import {belongsTo, Entity, hasOne, model, property} from '@loopback/repository';
 import {Publicacion} from './publicacion.model';
 import {Usuario} from './usuario.model';
 
@@ -21,30 +21,25 @@ export class Comentario extends Entity {
     type: 'string',
     required: true,
   })
-  tipo: string;
-
-  @property({
-    type: 'array',
-    itemType: 'string',
-  })
-  listaComentarios: string[];
-
-  @property({
-    type: 'date',
-    required: true,
-  })
   fecha: string;
-
-  @hasMany(() => Comentario)
-  comentarios: Comentario[];
 
   @property({
     type: 'string',
+    required: false,
   })
-  comentarioId?: string;
+  idPadre?: string;
 
-  @belongsTo(() => Comentario)
-  cComentarioId: string;
+  @property({
+    type: 'boolean',
+    required: true,
+  })
+  hijo: boolean;
+
+  @property({
+    type: 'string',
+    required: true,
+  })
+  usuarioId: string;
 
   @belongsTo(() => Publicacion)
   publicacionId: string;

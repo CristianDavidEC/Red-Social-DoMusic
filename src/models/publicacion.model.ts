@@ -1,9 +1,9 @@
-import {Entity, model, property, belongsTo, hasMany} from '@loopback/repository';
-import {Evento} from './evento.model';
-import {Encuesta} from './encuesta.model';
-import {MusicoProfesional} from './musico-profesional.model';
+import {belongsTo, Entity, hasMany, model, property} from '@loopback/repository';
 import {Banda} from './banda.model';
 import {Comentario} from './comentario.model';
+import {Encuesta} from './encuesta.model';
+import {Evento} from './evento.model';
+import {MusicoProfesional} from './musico-profesional.model';
 
 @model()
 export class Publicacion extends Entity {
@@ -41,6 +41,13 @@ export class Publicacion extends Entity {
     type: 'string',
   })
   archivo?: string;
+
+  @property({
+    type: 'string',
+    required: true,
+  })
+  idUsuario: string;
+
 
   @belongsTo(() => Evento)
   eventoId: string;

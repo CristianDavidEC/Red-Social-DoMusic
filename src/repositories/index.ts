@@ -14,3 +14,4 @@ export * from './musico-profesional.repository';
 export * from './notificacion.repository';
 export * from './publicacion.repository';
 export * from './usuario.repository';
+export * from './publicidad.repository';

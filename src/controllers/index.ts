@@ -53,3 +53,5 @@ export * from './comentario-usuario.controller';
 export * from './usuario-comentario.controller';
 export * from './cargar-archivos.controller';
 export * from './descarga-archivos.controller';
+export * from './publicidad.controller';
+export * from './comentario.controller';

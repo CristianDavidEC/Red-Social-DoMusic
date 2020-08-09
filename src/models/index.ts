@@ -17,3 +17,4 @@ export * from './publicacion.model';
 export * from './sms-notificacion.model';
 export * from './usuario.model';
 
+export * from './publicidad.model';
