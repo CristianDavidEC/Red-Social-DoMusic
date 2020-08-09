@@ -1,5 +1,6 @@
 import {inject} from '@loopback/core';
 import {repository} from '@loopback/repository';
+
 // import {repository} from '@loopback/repository';
 import {
   HttpErrors,
@@ -17,19 +18,20 @@ import {
 import multer from 'multer';
 import path from 'path';
 import {UploadFilesKeys} from '../keys/carga-archivos-llaves';
-import {MusicoProfesional} from '../models';
-import {MusicoProfesionalRepository} from '../repositories';
+import {MusicoProfesional, Banda} from '../models';
+import {MusicoProfesionalRepository, BandaRepository} from '../repositories';
+
 
 // import {Aficionado} from '../models';
 // import {AficionadoRepository} from '../repositories';
-// import {Banda} from '../models';
-// import {BandaRepository} from '../repositories';
 
 
 export class CargarArchivosController {
   constructor(
     @repository(MusicoProfesionalRepository)
-    private MusicoProfesionalRepository: MusicoProfesionalRepository
+    private MusicoProfesionalRepository: MusicoProfesionalRepository,
+    @repository(BandaRepository)
+    private BandaRepository: BandaRepository
   ) {
 
   }
@@ -103,6 +105,8 @@ export class CargarArchivosController {
     return res;
   }
 
+
+
   @post('/archivoPublicacion', {
     responses: {
       200: {
@@ -152,6 +156,35 @@ export class CargarArchivosController {
   ): Promise<object | false> {
     const pefilMusicoFilePath = path.join(__dirname, UploadFilesKeys.MUSICO_PHOTO_PATH);
     let res = await this.StoreFileToPath(pefilMusicoFilePath, UploadFilesKeys.MUSICO_PHOTO_FIELDNAME, request, response, UploadFilesKeys.IMAGE_ACCEPTED_EXT);
+    if (res) {
+      const filename = response.req?.file.filename;
+      if (filename) {
+        return {filename: filename};
+      }
+    }
+    return res;
+  }
+
+  @post('/archivoFotoBanda', {
+    responses: {
+      200: {
+        content: {
+          'application/json': {
+            schema: {
+              type: 'object',
+            },
+          },
+        },
+        description: 'Imagen de la Banda',
+      },
+    },
+  })
+  async CargaFotoBanda(
+    @inject(RestBindings.Http.RESPONSE) response: Response,
+    @requestBody.file() request: Request,
+  ): Promise<object | false> {
+    const pefilBandaFilePath = path.join(__dirname, UploadFilesKeys.BANDA_PHOTO_PATH);
+    let res = await this.StoreFileToPath(pefilBandaFilePath, UploadFilesKeys.BANDA_PHOTO_FIELDNAME, request, response, UploadFilesKeys.IMAGE_ACCEPTED_EXT);
     if (res) {
       const filename = response.req?.file.filename;
       if (filename) {
