@@ -31,9 +31,9 @@ export class Comentario extends Entity {
 
   @property({
     type: 'boolean',
-    required: false,
+    required: true,
   })
-  hijo?: boolean;
+  hijo: boolean;
 
   @belongsTo(() => Publicacion)
   publicacionId: string;
