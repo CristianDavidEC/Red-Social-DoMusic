@@ -136,6 +136,35 @@ export class CargarArchivosController {
     return res;
   }
 
+  @post('/fotoAficionado', {
+    responses: {
+      200: {
+        content: {
+          'application/json': {
+            schema: {
+              type: 'object',
+            },
+          },
+        },
+        description: 'Archivo de la Publicacion',
+      },
+    },
+  })
+  async fotoAficionado(
+    @inject(RestBindings.Http.RESPONSE) response: Response,
+    @requestBody.file() request: Request,
+  ): Promise<object | false> {
+    const publicacionFilePath = path.join(__dirname, UploadFilesKeys.AFICIONADO_PHOTO_PATH);
+    let res = await this.StoreFileToPath(publicacionFilePath, UploadFilesKeys.AFICIONADO_PHOTO_FIELDNAME, request, response, UploadFilesKeys.IMAGE_ACCEPTED_EXT);
+    if (res) {
+      const filename = response.req?.file.filename;
+      if (filename) {
+        return {filename: filename};
+      }
+    }
+    return res;
+  }
+
   @post('/archivoFotoMusico', {
     responses: {
       200: {
