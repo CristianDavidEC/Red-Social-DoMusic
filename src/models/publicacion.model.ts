@@ -40,7 +40,7 @@ export class Publicacion extends Entity {
   @property({
     type: 'string',
   })
-  archivo?: string;
+  image?: string;
 
   @property({
     type: 'string',
