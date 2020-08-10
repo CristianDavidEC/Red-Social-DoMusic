@@ -30,7 +30,7 @@ export class DenunciaXUsuarioController {
     public denunciaXusarioRepository: DenunciaXusarioRepository,
   ) {}
 
-  @authenticate('TokenMusProfesionalStrategy' && 'TokenBandaStrategy' && 'TokenAficionadoStrategy')
+  //@authenticate('TokenMusProfesionalStrategy' && 'TokenBandaStrategy' && 'TokenAficionadoStrategy')
   @post('/denuncia-xusarios', {
     responses: {
       '200': {
