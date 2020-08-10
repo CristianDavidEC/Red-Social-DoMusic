@@ -48,7 +48,7 @@ export class Banda extends Entity {
     type: 'string',
     required: false,
   })
-  fotoPerfil?: string;
+  image?: string;
 
   @property({
     type: 'string',

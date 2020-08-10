@@ -191,6 +191,7 @@ export class CargarArchivosController {
   }
 
 
+
   @post('/archivoFotoMusico', {
     responses: {
       200: {
@@ -211,6 +212,35 @@ export class CargarArchivosController {
   ): Promise<object | false> {
     const pefilMusicoFilePath = path.join(__dirname, UploadFilesKeys.MUSICO_PHOTO_PATH);
     let res = await this.StoreFileToPath(pefilMusicoFilePath, UploadFilesKeys.MUSICO_PHOTO_FIELDNAME, request, response, UploadFilesKeys.IMAGE_ACCEPTED_EXT);
+    if (res) {
+      const filename = response.req?.file.filename;
+      if (filename) {
+        return {filename: filename};
+      }
+    }
+    return res;
+  }
+
+  @post('/archivoFotoBanda', {
+    responses: {
+      200: {
+        content: {
+          'application/json': {
+            schema: {
+              type: 'object',
+            },
+          },
+        },
+        description: 'Archivo de la Publicacion',
+      },
+    },
+  })
+  async CargaFotoBanda(
+    @inject(RestBindings.Http.RESPONSE) response: Response,
+    @requestBody.file() request: Request,
+  ): Promise<object | false> {
+    const pefilMusicoFilePath = path.join(__dirname, UploadFilesKeys.BANDA_PHOTO_PATH);
+    let res = await this.StoreFileToPath(pefilMusicoFilePath, UploadFilesKeys.BANDA_PHOTO_FIELDNAME, request, response, UploadFilesKeys.IMAGE_ACCEPTED_EXT);
     if (res) {
       const filename = response.req?.file.filename;
       if (filename) {
