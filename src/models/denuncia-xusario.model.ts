@@ -23,10 +23,16 @@ export class DenunciaXusario extends Entity {
   tipo: string;
 
   @property({
-    type: 'date',
+    type: 'string',
     required: true,
   })
   fecha: string;
+
+  @property({
+    type: 'string',
+    required: true,
+  })
+  asunto: string;
 
   @property({
     type: 'string',
