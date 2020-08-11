@@ -18,9 +18,9 @@ export class Notificacion extends Entity {
 
   @property({
     type: 'string',
-    required: true,
+    required: false,
   })
-  contenido: string;
+  contenido?: string;
 
   @property({
     type: 'date',
