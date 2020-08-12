@@ -32,6 +32,13 @@ export class Publicacion extends Entity {
   reacciones?: number;
 
   @property({
+    type: 'array',
+    itemType: 'string',
+    required: false,
+  })
+  userReacciones?: string[];
+
+  @property({
     type: 'string',
     required: true,
   })
