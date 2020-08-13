@@ -12,8 +12,8 @@ import fs from 'fs';
 import path from 'path';
 import {promisify} from 'util';
 import {UploadFilesKeys} from '../keys/carga-archivos-llaves';
-import {MusicoProfesional, Publicacion, Publicidad} from '../models';
-import {MusicoProfesionalRepository, PublicacionRepository, PublicidadRepository} from '../repositories';
+import {DenunciaXPubli, DenunciaXusario, MusicoProfesional, Publicacion, Publicidad} from '../models';
+import {DenunciaXPubliRepository, DenunciaXusarioRepository, MusicoProfesionalRepository, PublicacionRepository, PublicidadRepository} from '../repositories';
 
 const readdir = promisify(fs.readdir);
 
@@ -26,6 +26,12 @@ export class DescargaArchivosController {
     private publicidadRepository: PublicidadRepository,
     @repository(MusicoProfesionalRepository)
     private musicoProfesionalRepository: MusicoProfesionalRepository,
+
+    @repository(DenunciaXPubliRepository)
+    private denunciaRepository: DenunciaXPubliRepository,
+
+    @repository(DenunciaXusarioRepository)
+    private denunciaUsuarioRepository: DenunciaXusarioRepository,
   ) {}
 
   /**
@@ -97,6 +103,10 @@ export class DescargaArchivosController {
       case 3:
         filePath = path.join(__dirname, UploadFilesKeys.ADVERTISING_IMAGE_PATH);
         break;
+
+      case 4:
+        filePath = path.join(__dirname, UploadFilesKeys.DENUNCIAS);
+        break;
     }
     return filePath;
   }
@@ -122,6 +132,16 @@ export class DescargaArchivosController {
       case 3:
         const publicidad: Publicidad = await this.publicidadRepository.findById(recordId);
         fileName = publicidad.image ?? '';
+        break;
+
+      case 4:
+        const denuncia: DenunciaXPubli = await this.denunciaRepository.findById(recordId);
+        fileName = denuncia.archivoPrueba ?? '';
+        break;
+
+      case 5:
+        const denunciaUsuario: DenunciaXusario = await this.denunciaUsuarioRepository.findById(recordId);
+        fileName = denunciaUsuario.archivoPrueba ?? '';
         break;
     }
     return fileName;
