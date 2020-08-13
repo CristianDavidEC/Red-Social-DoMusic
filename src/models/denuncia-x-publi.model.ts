@@ -28,6 +28,13 @@ export class DenunciaXPubli extends Entity {
   })
   fecha: string;
 
+  @property({
+    type: 'string',
+    required: true,
+  })
+  publicacionId: string;
+  
+
   @belongsTo(() => Usuario)
   usuarioId: string;
 
