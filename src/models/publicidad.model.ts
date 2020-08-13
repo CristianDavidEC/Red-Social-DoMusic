@@ -21,6 +21,11 @@ export class Publicidad extends Entity {
   })
   contenido: string;
 
+  @property({
+    type: 'string',
+    required: false,
+  })
+  image?: string;
 
   constructor(data?: Partial<Publicidad>) {
     super(data);
