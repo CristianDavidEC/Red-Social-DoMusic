@@ -12,7 +12,7 @@ import fs from 'fs';
 import path from 'path';
 import {promisify} from 'util';
 import {UploadFilesKeys} from '../keys/carga-archivos-llaves';
-import {MusicoProfesional, Publicacion} from '../models';
+import {MusicoProfesional, Publicacion, Publicidad} from '../models';
 import {MusicoProfesionalRepository, PublicacionRepository, PublicidadRepository} from '../repositories';
 
 const readdir = promisify(fs.readdir);
@@ -118,11 +118,11 @@ export class DescargaArchivosController {
         const publicacion: Publicacion = await this.publicacionRepository.findById(recordId);
         fileName = publicacion.image ?? '';
         break;
-      // Publicidad
-      /* case 3:
+
+      case 3:
         const publicidad: Publicidad = await this.publicidadRepository.findById(recordId);
-        fileName = publicidad.;
-        break; */
+        fileName = publicidad.image ?? '';
+        break;
     }
     return fileName;
   }
