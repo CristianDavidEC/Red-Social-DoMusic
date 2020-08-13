@@ -26,7 +26,6 @@ export class DenunciaXPubliController {
     public denunciaXPubliRepository : DenunciaXPubliRepository,
   ) {}
 
-  @authenticate('BasicStrategy')
   @post('/denuncia-x-publis', {
     responses: {
       '200': {
@@ -51,7 +50,7 @@ export class DenunciaXPubliController {
     return this.denunciaXPubliRepository.create(denunciaXPubli);
   }
 
-  @authenticate('BasicStrategy')
+  @authenticate('TokenStrategy')
   @get('/denuncia-x-publis/count', {
     responses: {
       '200': {
@@ -66,7 +65,7 @@ export class DenunciaXPubliController {
     return this.denunciaXPubliRepository.count(where);
   }
 
-  @authenticate('BasicStrategy')
+  @authenticate('TokenStrategy')
   @get('/denuncia-x-publis', {
     responses: {
       '200': {
@@ -111,8 +110,8 @@ export class DenunciaXPubliController {
   }
  */
 
-  @authenticate('BasicStrategy')  
-  @get('/denuncia-x-publis/{id}', {
+@authenticate('TokenStrategy')
+@get('/denuncia-x-publis/{id}', {
     responses: {
       '200': {
         description: 'DenunciaXPubli model instance',
@@ -166,7 +165,7 @@ export class DenunciaXPubliController {
     await this.denunciaXPubliRepository.replaceById(id, denunciaXPubli);
   } */
 
-  @authenticate('BasicStrategy')
+  @authenticate('TokenStrategy')
   @del('/denuncia-x-publis/{id}', {
     responses: {
       '204': {

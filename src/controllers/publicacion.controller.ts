@@ -174,7 +174,6 @@ export class PublicacionController {
   }
 
   @authenticate('TokenStrategy')
-
   @del('/publicaciones/{id}', {
     responses: {
       '204': {

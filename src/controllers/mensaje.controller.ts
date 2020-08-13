@@ -25,9 +25,8 @@ export class MensajeController {
     @repository(MensajeRepository)
     public mensajeRepository : MensajeRepository,
   ) {}
-  
+
   @authenticate('TokenStrategy')
-  //@authenticate('TokenMusProfesionalStrategy' && 'TokenBandaStrategy' && 'TokenAficionadoStrategy')
   @post('/mensajes', {
     responses: {
       '200': {
@@ -52,8 +51,6 @@ export class MensajeController {
     return this.mensajeRepository.create(mensaje);
   }
 
-  @authenticate('TokenStrategy')
-  //@authenticate('TokenMusProfesionalStrategy' && 'TokenBandaStrategy' && 'TokenAficionadoStrategy' && 'TokenAdminStrategy')
   @get('/mensajes/count', {
     responses: {
       '200': {
@@ -69,7 +66,6 @@ export class MensajeController {
   }
 
   @authenticate('TokenStrategy')
-  //@authenticate('TokenMusProfesionalStrategy' && 'TokenBandaStrategy' && 'TokenAficionadoStrategy' && 'TokenAdminStrategy')
   @get('/mensajes', {
     responses: {
       '200': {
@@ -114,7 +110,6 @@ export class MensajeController {
   } */
 
   @authenticate('TokenStrategy')
-  //@authenticate('TokenMusProfesionalStrategy' && 'TokenBandaStrategy' && 'TokenAficionadoStrategy' && 'TokenAdminStrategy')
   @get('/mensajes/{id}', {
     responses: {
       '200': {
@@ -170,7 +165,6 @@ export class MensajeController {
   } */
 
   @authenticate('TokenStrategy')
-  //@authenticate('TokenMusProfesionalStrategy' && 'TokenBandaStrategy' && 'TokenAficionadoStrategy')
   @del('/mensajes/{id}', {
     responses: {
       '204': {

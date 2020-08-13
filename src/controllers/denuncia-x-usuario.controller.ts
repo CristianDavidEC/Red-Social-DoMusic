@@ -55,7 +55,7 @@ export class DenunciaXUsuarioController {
     return this.denunciaXusarioRepository.create(denunciaXusario);
   }
 
-  @authenticate('TokenAdminStrategy')
+  @authenticate('TokenStrategy')
   @get('/denuncia-xusarios/count', {
     responses: {
       '200': {
@@ -70,7 +70,7 @@ export class DenunciaXUsuarioController {
     return this.denunciaXusarioRepository.count(where);
   }
 
-  @authenticate('TokenAdminStrategy')
+  @authenticate('TokenStrategy')
 
   @get('/denuncia-xusarios', {
     responses: {
@@ -115,7 +115,7 @@ export class DenunciaXUsuarioController {
     return this.denunciaXusarioRepository.updateAll(denunciaXusario, where);
   } */
 
-  @authenticate('TokenAdminStrategy')
+  @authenticate('TokenStrategy')
   @get('/denuncia-xusarios/{id}', {
     responses: {
       '200': {
@@ -170,7 +170,7 @@ export class DenunciaXUsuarioController {
     await this.denunciaXusarioRepository.replaceById(id, denunciaXusario);
   } */
 
-  @authenticate('BasicStrategy')
+  @authenticate('TokenStrategy')
   @del('/denuncia-xusarios/{id}', {
     responses: {
       '204': {
