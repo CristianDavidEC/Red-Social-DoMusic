@@ -74,8 +74,6 @@ export class DescargaArchivosController {
     const folder = this.GetFolderPathByType(type);
     const fileName = await this.GetFilenameById(type, recordId);
     const file = this.ValidateFileName(folder, fileName);
-    console.log("folder: " + folder)
-    console.log("fname: " + fileName)
     response.download(file, fileName);
     return response;
   }
