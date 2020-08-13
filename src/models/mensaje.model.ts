@@ -17,7 +17,7 @@ export class Mensaje extends Entity {
   contenido: string;
 
   @property({
-    type: 'date',
+    type: 'string',
     required: true,
   })
   fecha: string;
@@ -27,6 +27,12 @@ export class Mensaje extends Entity {
     required: true,
   })
   idReceptor: string;
+
+  @property({
+    type: 'string',
+    required: true,
+  })
+  idRemitente: string;
 
   @hasOne(() => Usuario)
   usuario: Usuario;
