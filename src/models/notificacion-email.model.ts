@@ -4,9 +4,9 @@ import {Model, model, property} from '@loopback/repository';
 export class NotificacionEmail extends Model {
   @property({
     type: 'string',
-    required: true,
+    required: false,
   })
-  to: string;
+  to?: string;
 
   @property({
     type: 'string',
@@ -26,6 +26,11 @@ export class NotificacionEmail extends Model {
   })
   textBody: string;
 
+  @property({
+    type: 'string',
+    required: false,
+  })
+  from?: string;
 
   constructor(data?: Partial<NotificacionEmail>) {
     super(data);

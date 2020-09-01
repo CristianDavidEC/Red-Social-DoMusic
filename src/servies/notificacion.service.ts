@@ -54,4 +54,28 @@ export class NotificacionService {
       return false
     }
   }
+
+
+  async ContactoEmail(notificacion: NotificacionEmail): Promise<boolean> {
+      try {
+        sgMail.setApiKey(NotificacionDatasource.SENDGRID_API_KEY);
+        const msg = {
+          to: notificacion.to,
+          from: notificacion.from,
+          subject: notificacion.subject,
+          text: notificacion.textBody,
+          html: notificacion.htmlBody,
+        };
+        await sgMail.send(msg).then((data: any) => {
+          console.log(data);
+          return true;
+        }, function (error: any) {
+          console.log(error);
+          return false;
+        });
+        return true;
+      } catch (err) {
+        return false
+      }
+    }
 }

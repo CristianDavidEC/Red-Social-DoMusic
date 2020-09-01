@@ -26,6 +26,14 @@ class CambiarContrasena {
   contrasenaNueva: string;
 }
 
+class Contactar {
+  nombre: string;
+  correo: string;
+  celular: string;
+  asunto: string;
+  mensaje: string
+}
+
 export class UserController {
   authService: AuthService;
   constructor(
@@ -166,6 +174,36 @@ export class UserController {
 
   }
 
+  @post('/contactar', {
+    responses: {
+      '200': {
+        description: 'contacto a un admin'
+      }
+    }
+  })
+
+  async contactar(
+    @requestBody() contactar: Contactar
+  ): Promise<Boolean> {
+    //Genera la notificaicon de email
+    let notificacion = new NotificacionEmail({
+      textBody: `${contactar.mensaje} ${contactar.nombre} ${contactar.celular}`,
+      htmlBody: `${contactar.mensaje} <br> ${contactar.nombre} <br> ${contactar.celular}`,
+      from: contactar.correo,
+      to: 'tatianagiraldohernandez@gmail.com',
+      subject: `${contactar.asunto}`
+
+    });
+    //Envia la notificacion
+    console.log(notificacion)
+    let email = await new NotificacionService().ContactoEmail(notificacion);
+    if (email) {
+      console.log("el mensaje fue enviado");
+      return true;
+    }
+    throw new HttpErrors["400"]("El Email fue enviado");
+
+  }
 
   @post('/cambiar-contrasena', {
     responses: {
