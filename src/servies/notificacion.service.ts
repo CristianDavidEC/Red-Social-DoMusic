@@ -66,13 +66,18 @@ export class NotificacionService {
           text: notificacion.textBody,
           html: notificacion.htmlBody,
         };
-        await sgMail.send(msg).then((data: any) => {
-          console.log(data);
-          return true;
-        }, function (error: any) {
-          console.log(error);
+        if(msg.from != '' && msg.html!='' && msg.subject!='' && msg.text!=''){
+          await sgMail.send(msg).then((data: any) => {
+            console.log(data);
+            return true;
+          }, function (error: any) {
+            console.log(error);
+            return false;
+          });
+        }else{
           return false;
-        });
+        }
+
         return true;
       } catch (err) {
         return false
